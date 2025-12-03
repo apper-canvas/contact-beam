@@ -185,9 +185,9 @@ const Pipeline = () => {
               description="Start by creating your first deal to see it in the pipeline."
             />
           </div>
-        ) : (
+) : (
           <DragDropContext onDragEnd={handleDragEnd}>
-<div className="h-full p-6 pipeline-grid-container">
+            <div className="h-full p-6 pipeline-grid-container pipeline-scroll-container">
               <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 h-full min-w-fit">
                 {Object.values(dealService.DEAL_STAGES).map((stage) => {
                   const stageDeals = getDealsByStage(stage.id);
