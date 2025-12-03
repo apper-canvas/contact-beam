@@ -132,7 +132,7 @@ const Pipeline = () => {
   }
 
   return (
-    <div className="h-full flex flex-col bg-gradient-to-br from-slate-50 to-blue-50">
+<div className="h-full flex flex-col bg-gradient-to-br from-slate-50 to-blue-50 pipeline-scroll-container">
       {/* Header */}
       <div className="flex-shrink-0 p-6 border-b border-gray-200 bg-white/80 backdrop-blur-sm">
         <div className="flex items-center justify-between">
@@ -177,7 +177,7 @@ const Pipeline = () => {
       </div>
 
       {/* Pipeline Board */}
-<div className="flex-1 pipeline-scroll-container">
+<div className="flex-1 overflow-hidden">
         {deals.length === 0 ? (
           <div className="h-full flex items-center justify-center">
             <Empty 
@@ -187,14 +187,14 @@ const Pipeline = () => {
           </div>
         ) : (
           <DragDropContext onDragEnd={handleDragEnd}>
-            <div className="h-full p-6 pipeline-grid-container">
-              <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 h-full">
+<div className="h-full p-6 pipeline-grid-container">
+              <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 h-full min-w-fit">
                 {Object.values(dealService.DEAL_STAGES).map((stage) => {
                   const stageDeals = getDealsByStage(stage.id);
                   const stageAnalytics = analytics[stage.id] || {};
 
                   return (
-                    <div key={stage.id} className="flex flex-col h-full">
+<div key={stage.id} className="flex flex-col h-full min-w-[280px]">
                       {/* Stage Header */}
                       <StageHeader
                         stage={stage}
@@ -205,11 +205,11 @@ const Pipeline = () => {
                       {/* Drop Zone */}
                       <Droppable droppableId={stage.id}>
                         {(provided, snapshot) => (
-                          <div
+<div
                             ref={provided.innerRef}
                             {...provided.droppableProps}
                             className={`
-                              flex-1 p-4 rounded-lg min-h-[200px] transition-all duration-200
+                              flex-1 p-4 rounded-lg min-h-[200px] transition-all duration-200 pipeline-stage-scroll
                               ${snapshot.isDraggingOver 
                                 ? 'bg-blue-50 border-2 border-blue-300 border-dashed' 
                                 : 'bg-gray-50 border-2 border-gray-200 border-dashed'
