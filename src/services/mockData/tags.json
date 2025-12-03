@@ -1,0 +1,66 @@
+[
+  {
+    "label": "customer",
+    "color": "#10b981"
+  },
+  {
+    "label": "prospect",
+    "color": "#3b82f6"
+  },
+  {
+    "label": "partner",
+    "color": "#8b5cf6"
+  },
+  {
+    "label": "hot-lead",
+    "color": "#ef4444"
+  },
+  {
+    "label": "warm-lead",
+    "color": "#f59e0b"
+  },
+  {
+    "label": "cold-lead",
+    "color": "#64748b"
+  },
+  {
+    "label": "enterprise",
+    "color": "#0ea5e9"
+  },
+  {
+    "label": "startup",
+    "color": "#06b6d4"
+  },
+  {
+    "label": "tech-focused",
+    "color": "#6366f1"
+  },
+  {
+    "label": "marketing",
+    "color": "#ec4899"
+  },
+  {
+    "label": "finance",
+    "color": "#14b8a6"
+  },
+  {
+    "label": "sustainability",
+    "color": "#22c55e"
+  },
+  {
+    "label": "referral",
+    "color": "#a855f7"
+  },
+  {
+    "label": "ready-to-buy",
+    "color": "#dc2626"
+  },
+  {
+    "label": "consultant",
+    "color": "#7c3aed"
+  },
+  {
+    "label": "integration",
+    "color": "#059669"
+  }
+]

@@ -1,0 +1,74 @@
+[
+  {
+    "id": "1",
+    "name": "Sarah Chen",
+    "email": "sarah.chen@techcorp.com",
+    "phone": "(555) 123-4567",
+    "company": "TechCorp Solutions",
+    "position": "VP of Sales",
+    "notes": "Key decision maker for enterprise solutions. Interested in Q2 expansion. Prefers email communication.",
+    "tags": ["customer", "enterprise", "hot-lead"],
+    "createdAt": "2024-01-15T10:00:00Z",
+    "updatedAt": "2024-01-15T10:00:00Z"
+  },
+  {
+    "id": "2",
+    "name": "Michael Rodriguez",
+    "email": "m.rodriguez@innovate.io",
+    "phone": "(555) 234-5678",
+    "company": "Innovate Digital",
+    "position": "CTO",
+    "notes": "Tech-focused decision maker. Evaluating multiple vendors. Schedule demo for March.",
+    "tags": ["prospect", "tech-focused", "warm-lead"],
+    "createdAt": "2024-01-16T14:30:00Z",
+    "updatedAt": "2024-01-16T14:30:00Z"
+  },
+  {
+    "id": "3",
+    "name": "Emily Johnson",
+    "email": "emily@greenstart.com",
+    "phone": "(555) 345-6789",
+    "company": "GreenStart Initiative",
+    "position": "Founder",
+    "notes": "Sustainability-focused startup. Budget constraints but high potential for partnership.",
+    "tags": ["partner", "startup", "sustainability"],
+    "createdAt": "2024-01-17T09:15:00Z",
+    "updatedAt": "2024-01-17T09:15:00Z"
+  },
+  {
+    "id": "4",
+    "name": "David Park",
+    "email": "david.park@finance-plus.com",
+    "phone": "(555) 456-7890",
+    "company": "Finance Plus",
+    "position": "Operations Manager",
+    "notes": "Looking to streamline operations. Budget approved for Q1. Ready to move forward.",
+    "tags": ["customer", "finance", "ready-to-buy"],
+    "createdAt": "2024-01-18T16:45:00Z",
+    "updatedAt": "2024-01-18T16:45:00Z"
+  },
+  {
+    "id": "5",
+    "name": "Lisa Thompson",
+    "email": "lisa.t@marketmasters.co",
+    "phone": "(555) 567-8901",
+    "company": "Market Masters",
+    "position": "Marketing Director",
+    "notes": "Referral from existing customer. Interested in marketing automation tools.",
+    "tags": ["prospect", "referral", "marketing"],
+    "createdAt": "2024-01-19T11:20:00Z",
+    "updatedAt": "2024-01-19T11:20:00Z"
+  },
+  {
+    "id": "6",
+    "name": "James Wilson",
+    "email": "james@consultpro.biz",
+    "phone": "(555) 678-9012",
+    "company": "ConsultPro Services",
+    "position": "Senior Consultant",
+    "notes": "Potential integration partner. Has existing client base that could benefit from our solutions.",
+    "tags": ["partner", "consultant", "integration"],
+    "createdAt": "2024-01-20T13:10:00Z",
+    "updatedAt": "2024-01-20T13:10:00Z"
+  }
+]
