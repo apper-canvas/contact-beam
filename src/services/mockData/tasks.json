@@ -1,0 +1,152 @@
+[
+  {
+    "Id": 1,
+    "title": "Follow up with Acme Corp proposal",
+    "description": "Review proposal feedback and schedule follow-up meeting with decision makers",
+    "dueDate": "2024-02-15",
+    "priority": "High",
+    "status": "In Progress",
+    "createdAt": "2024-01-10T09:00:00Z",
+    "updatedAt": "2024-01-12T14:30:00Z"
+  },
+  {
+    "Id": 2,
+    "title": "Prepare quarterly sales report",
+    "description": "Compile Q4 sales data and create comprehensive report for leadership team",
+    "dueDate": "2024-02-20",
+    "priority": "Medium",
+    "status": "Pending",
+    "createdAt": "2024-01-08T11:15:00Z",
+    "updatedAt": "2024-01-08T11:15:00Z"
+  },
+  {
+    "Id": 3,
+    "title": "Update CRM contact information",
+    "description": "Review and update outdated contact details for key accounts",
+    "dueDate": "2024-02-10",
+    "priority": "Low",
+    "status": "Completed",
+    "createdAt": "2024-01-05T16:45:00Z",
+    "updatedAt": "2024-01-15T10:20:00Z"
+  },
+  {
+    "Id": 4,
+    "title": "Schedule client onboarding meeting",
+    "description": "Coordinate with new client TechStart Inc for initial onboarding session",
+    "dueDate": "2024-02-18",
+    "priority": "High",
+    "status": "Pending",
+    "createdAt": "2024-01-12T08:30:00Z",
+    "updatedAt": "2024-01-12T08:30:00Z"
+  },
+  {
+    "Id": 5,
+    "title": "Review contract terms with legal team",
+    "description": "Collaborate with legal department on new partnership agreement terms",
+    "dueDate": "2024-02-25",
+    "priority": "Medium",
+    "status": "In Progress",
+    "createdAt": "2024-01-14T13:20:00Z",
+    "updatedAt": "2024-01-16T09:45:00Z"
+  },
+  {
+    "Id": 6,
+    "title": "Organize team training session",
+    "description": "Plan and schedule product knowledge training for sales team",
+    "dueDate": "2024-03-01",
+    "priority": "Medium",
+    "status": "Pending",
+    "createdAt": "2024-01-11T15:10:00Z",
+    "updatedAt": "2024-01-11T15:10:00Z"
+  },
+  {
+    "Id": 7,
+    "title": "Research competitor pricing strategies",
+    "description": "Analyze market competitors and their pricing models for strategic planning",
+    "dueDate": "2024-02-28",
+    "priority": "Low",
+    "status": "In Progress",
+    "createdAt": "2024-01-09T12:00:00Z",
+    "updatedAt": "2024-01-13T16:15:00Z"
+  },
+  {
+    "Id": 8,
+    "title": "Create customer satisfaction survey",
+    "description": "Design and deploy survey to gather client feedback on services",
+    "dueDate": "2024-02-22",
+    "priority": "Medium",
+    "status": "Pending",
+    "createdAt": "2024-01-13T10:25:00Z",
+    "updatedAt": "2024-01-13T10:25:00Z"
+  },
+  {
+    "Id": 9,
+    "title": "Update product documentation",
+    "description": "Revise user manuals and help guides with latest feature updates",
+    "dueDate": "2024-02-14",
+    "priority": "Low",
+    "status": "Completed",
+    "createdAt": "2024-01-07T14:40:00Z",
+    "updatedAt": "2024-01-14T11:30:00Z"
+  },
+  {
+    "Id": 10,
+    "title": "Prepare investor presentation",
+    "description": "Create comprehensive slide deck for upcoming investor meeting",
+    "dueDate": "2024-02-16",
+    "priority": "High",
+    "status": "In Progress",
+    "createdAt": "2024-01-15T09:00:00Z",
+    "updatedAt": "2024-01-17T13:45:00Z"
+  },
+  {
+    "Id": 11,
+    "title": "Audit expense reports",
+    "description": "Review and verify monthly expense submissions for accuracy",
+    "dueDate": "2024-02-12",
+    "priority": "Medium",
+    "status": "Pending",
+    "createdAt": "2024-01-10T11:30:00Z",
+    "updatedAt": "2024-01-10T11:30:00Z"
+  },
+  {
+    "Id": 12,
+    "title": "Plan marketing campaign launch",
+    "description": "Coordinate cross-functional teams for Q2 product campaign rollout",
+    "dueDate": "2024-03-05",
+    "priority": "High",
+    "status": "Pending",
+    "createdAt": "2024-01-16T08:15:00Z",
+    "updatedAt": "2024-01-16T08:15:00Z"
+  },
+  {
+    "Id": 13,
+    "title": "Optimize database performance",
+    "description": "Analyze query performance and implement optimization strategies",
+    "dueDate": "2024-02-26",
+    "priority": "Low",
+    "status": "In Progress",
+    "createdAt": "2024-01-08T16:20:00Z",
+    "updatedAt": "2024-01-12T10:10:00Z"
+  },
+  {
+    "Id": 14,
+    "title": "Conduct customer interviews",
+    "description": "Interview key clients to gather insights for product roadmap planning",
+    "dueDate": "2024-02-24",
+    "priority": "Medium",
+    "status": "Completed",
+    "createdAt": "2024-01-06T13:50:00Z",
+    "updatedAt": "2024-01-18T15:25:00Z"
+  },
+  {
+    "Id": 15,
+    "title": "Setup automated backup system",
+    "description": "Implement and test automated daily backup procedures for critical data",
+    "dueDate": "2024-02-19",
+    "priority": "High",
+    "status": "In Progress",
+    "createdAt": "2024-01-11T07:45:00Z",
+    "updatedAt": "2024-01-15T12:00:00Z"
+  }
+]

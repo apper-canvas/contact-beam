@@ -6,6 +6,7 @@ const Layout = lazy(() => import('@/components/organisms/Layout'));
 const ContactManagement = lazy(() => import('@/components/pages/ContactManagement'));
 const CompanyDetails = lazy(() => import('@/components/pages/CompanyDetails'));
 const Pipeline = lazy(() => import('@/components/pages/Pipeline'));
+const TaskManagement = lazy(() => import('@/components/pages/TaskManagement'));
 const NotFound = lazy(() => import('@/components/pages/NotFound'));
 // Loading component
 const SuspenseWrapper = ({ children }) => (
@@ -55,6 +56,14 @@ const mainRoutes = [
     element: (
       <SuspenseWrapper>
         <Pipeline />
+      </SuspenseWrapper>
+)
+  },
+  {
+    path: "tasks",
+    element: (
+      <SuspenseWrapper>
+        <TaskManagement />
       </SuspenseWrapper>
     )
   },

@@ -168,13 +168,20 @@ return (
               >
                 <ApperIcon name="Building" size={20} />
                 <span className="font-medium">Companies</span>
-              </a>
+</a>
               <a
                 href="/pipeline"
                 className={`flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors ${window.location.pathname === '/pipeline' ? 'bg-primary/10 text-primary border-r-2 border-primary' : ''}`}
               >
                 <ApperIcon name="Workflow" size={20} />
                 <span className="font-medium">Pipeline</span>
+              </a>
+              <a
+                href="/tasks"
+                className={`flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors ${window.location.pathname === '/tasks' ? 'bg-primary/10 text-primary border-r-2 border-primary' : ''}`}
+              >
+                <ApperIcon name="CheckSquare" size={20} />
+                <span className="font-medium">Tasks</span>
               </a>
             </div>
 </nav>
