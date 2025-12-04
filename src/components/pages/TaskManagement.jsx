@@ -153,8 +153,22 @@ const [viewMode, setViewMode] = useState('grid'); // 'grid' or 'list'
   return (
     <div className="h-full flex flex-col bg-background">
       {/* Header */}
-<div className="bg-white border-b border-gray-200 p-6">
-        {/* Search, Filters, and Actions in Single Row */}
+{/* Header Section */}
+      <div className="bg-white border-b border-gray-200 p-6">
+        <div className="flex items-center justify-between mb-4">
+          <div>
+            <h1 className="text-2xl font-bold text-gray-900">Tasks</h1>
+            <p className="text-gray-600 mt-1">
+              Manage and track your tasks
+            </p>
+          </div>
+          <Button onClick={handleCreateTask} className="bg-blue-600 hover:bg-blue-700 min-h-[44px]">
+            <ApperIcon name="Plus" size={16} className="mr-2" />
+            Create Task
+          </Button>
+        </div>
+
+        {/* Search, Filters, and View Controls */}
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
           {/* Left: Search and Filters */}
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 flex-1">
@@ -194,7 +208,7 @@ const [viewMode, setViewMode] = useState('grid'); // 'grid' or 'list'
             </div>
           </div>
 
-          {/* Right: View Toggle and Create Button */}
+          {/* Right: View Toggle */}
           <div className="flex items-center space-x-3">
             <div className="flex items-center bg-gray-100 rounded-lg p-1">
               <button
@@ -220,10 +234,6 @@ const [viewMode, setViewMode] = useState('grid'); // 'grid' or 'list'
                 <ApperIcon name="List" size={16} />
               </button>
             </div>
-            <Button onClick={handleCreateTask} className="bg-blue-600 hover:bg-blue-700">
-              <ApperIcon name="Plus" size={16} className="mr-2" />
-              Create Task
-            </Button>
           </div>
         </div>
       </div>

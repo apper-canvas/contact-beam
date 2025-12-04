@@ -1,8 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { companyService } from "@/services/api/companyService";
 import { toast } from "react-toastify";
-import CompanyTable from "@/components/molecules/CompanyTable";
-import CompanyModal from "@/components/molecules/CompanyModal";
+import { create, getAll, update } from "@/services/api/dealService";
 import ApperIcon from "@/components/ApperIcon";
 import Loading from "@/components/ui/Loading";
 import ErrorView from "@/components/ui/ErrorView";
@@ -12,7 +11,9 @@ import Modal from "@/components/atoms/Modal";
 import Button from "@/components/atoms/Button";
 import Input from "@/components/atoms/Input";
 import SearchBar from "@/components/molecules/SearchBar";
+import CompanyTable from "@/components/molecules/CompanyTable";
 import SortFilter from "@/components/molecules/SortFilter";
+import CompanyModal from "@/components/molecules/CompanyModal";
 import ConfirmDialog from "@/components/molecules/ConfirmDialog";
 
 const CompanyList = () => {
@@ -129,19 +130,22 @@ const handleCompanySelect = (company) => {
   }
 
   return (
+return (
     <div className="h-full flex flex-col">
       {/* Header */}
       <div className="flex flex-col space-y-4 mb-6">
-        <div className="flex items-center justify-between">
+        <div className="flex justify-between items-start">
           <div>
             <h1 className="text-2xl font-bold text-gray-900">Companies</h1>
             <p className="text-gray-600 mt-1">
               {filteredAndSortedCompanies.length} of {companies.length} companies
             </p>
           </div>
+          <Button onClick={() => setShowModal(true)} className="bg-primary hover:bg-primary/90 min-h-[44px]">
+            <ApperIcon name="Plus" size={16} className="mr-2" />
+            Add Company
+          </Button>
         </div>
-
-        {/* Search and Filters */}
         <div className="flex flex-col md:flex-row gap-4">
           {/* Search */}
           <div className="flex-1 relative">
@@ -400,10 +404,6 @@ return (
     <div className="h-full flex flex-col bg-background">
     {/* Header */}
     <div className="p-4 lg:p-6 border-b border-gray-200 bg-surface">
-        <div className="flex items-center justify-between mb-4">
-            <h1 className="text-xl lg:text-2xl font-bold text-gray-900">Companies</h1>
-            <Button onClick={handleAddCompany} icon="Plus" size="sm" className="min-h-[44px]">Add Company
-                          </Button>
         </div>
         {/* Search and Sort Controls */}
         <div className="flex flex-col lg:flex-row gap-4">

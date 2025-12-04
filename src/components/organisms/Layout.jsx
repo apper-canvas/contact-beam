@@ -222,6 +222,34 @@ return (
                 </button>
               )}
               
+{/* Show Add Company button only on companies page */}
+              {window.location.pathname === '/companies' && (
+                <button
+                  onClick={() => {
+                    // TODO: Implement add company functionality
+                    console.log('Add company clicked');
+                  }}
+                  className="inline-flex items-center space-x-2 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors font-medium"
+                >
+                  <ApperIcon name="Plus" size={18} />
+                  <span>Add Company</span>
+                </button>
+              )}
+
+              {/* Show Add Task button only on tasks page */}
+              {window.location.pathname === '/tasks' && (
+                <button
+                  onClick={() => {
+                    // TODO: Implement add task functionality
+                    console.log('Add task clicked');
+                  }}
+                  className="inline-flex items-center space-x-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
+                >
+                  <ApperIcon name="Plus" size={18} />
+                  <span>Add Task</span>
+                </button>
+              )}
+
               {/* Show Add Deal button only on pipeline page */}
               {window.location.pathname === '/pipeline' && (
                 <button
