@@ -62,7 +62,7 @@ export const companyService = {
     return { ...updatedCompany };
   },
 
-  // Delete company
+// Delete company
   delete: async (id) => {
     // Simulate API delay
     await new Promise(resolve => setTimeout(resolve, 300));
@@ -75,6 +75,26 @@ export const companyService = {
     const deletedCompany = companies[index];
     companies.splice(index, 1);
     return { ...deletedCompany };
+  },
+
+  // Search companies by name
+  searchByName: async (searchTerm) => {
+    // Simulate API delay
+    await new Promise(resolve => setTimeout(resolve, 200));
+    
+    if (!searchTerm || searchTerm.trim().length === 0) {
+      return [];
+    }
+    
+    const term = searchTerm.toLowerCase().trim();
+    
+    return companies.filter(company => {
+      const nameMatch = company.Name?.toLowerCase().includes(term);
+      const industryMatch = company.Industry?.toLowerCase().includes(term);
+      const descriptionMatch = company.Description?.toLowerCase().includes(term);
+      
+      return nameMatch || industryMatch || descriptionMatch;
+    }).map(company => ({ ...company }));
   }
 };
 
