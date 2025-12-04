@@ -113,5 +113,40 @@ export const deleteLead = async (id) => {
     throw new Error("Failed to delete lead");
   }
 };
+// Search leads by query
+export const searchLeads = async (query) => {
+  await new Promise(resolve => setTimeout(resolve, 250));
+  
+  try {
+    const leads = initializeLeads();
+    
+    if (!query || query.trim() === '') {
+      return leads.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+    }
+    
+    const searchTerm = query.toLowerCase().trim();
+    
+    const filteredLeads = leads.filter(lead => {
+      const searchableFields = [
+        lead.firstName,
+        lead.lastName,
+        lead.email,
+        lead.company,
+        lead.status,
+        lead.source,
+        `${lead.firstName} ${lead.lastName}`.trim()
+      ];
+      
+      return searchableFields.some(field => 
+        field && field.toString().toLowerCase().includes(searchTerm)
+      );
+    });
+    
+    return filteredLeads.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+  } catch (error) {
+    throw new Error("Failed to search leads");
+  }
+};
 
+// Additional lead management functions can be added here
 // Additional lead management functions can be added here
