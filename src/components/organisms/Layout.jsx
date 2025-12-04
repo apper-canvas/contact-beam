@@ -1,10 +1,10 @@
-import React, { useState } from "react";
-import { Outlet, useOutletContext } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Outlet, useLocation, useNavigate, useOutletContext } from "react-router-dom";
 import { toast } from "react-toastify";
+import { contextualGlobalSearch, globalSearch } from "@/services/api/globalSearchService";
 import { createContact, deleteContact, updateContact } from "@/services/api/contactService";
-import { globalSearch } from "@/services/api/globalSearchService";
 import ApperIcon from "@/components/ApperIcon";
-import { useNavigate, useLocation } from 'react-router-dom';
+import Pipeline from "@/components/pages/Pipeline";
 const Layout = () => {
 // App-level state management
   const [selectedContact, setSelectedContact] = useState(null);
@@ -56,8 +56,6 @@ const location = useLocation();
     handleCreateTask: null
   });
 // Import contextual search function
-  const { contextualGlobalSearch } = require('@/services/api/globalSearchService');
-
   // App-level handlers
   const refreshContacts = () => {
     setRefreshTrigger(prev => prev + 1);
