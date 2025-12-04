@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
+import { useOutletContext } from "react-router-dom";
 import { companyService } from "@/services/api/companyService";
 import { toast } from "react-toastify";
 import { create, getAll, update } from "@/services/api/dealService";
@@ -173,18 +174,18 @@ return (
               <ApperIcon name="ChevronDown" size={16} className="text-gray-400" />
             </div>
 </div>
-          </div>
         </div>
+</div>
       </div>
 
       {/* Companies Table */}
+      <div className="flex-1 overflow-hidden">
         <CompanyTable
           companies={filteredAndSortedCompanies}
           onSort={handleSort}
           sortConfig={sortConfig}
           onCompanySelect={handleCompanySelect}
         />
-      </div>
 
       {/* Company Detail Modal */}
       <CompanyModal
