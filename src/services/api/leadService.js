@@ -40,8 +40,7 @@ export const getLeadById = async (id) => {
     throw new Error("Failed to load lead");
   }
 };
-// Export search function for global search integration
-export { searchLeads };
+// Search leads function defined below
 // Create new lead
 export const createLead = async (leadData) => {
   await new Promise(resolve => setTimeout(resolve, 400));
