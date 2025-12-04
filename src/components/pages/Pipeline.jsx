@@ -11,9 +11,10 @@ import StageHeader from "@/components/molecules/StageHeader";
 
 const Pipeline = () => {
   const [deals, setDeals] = useState([]);
-  const [analytics, setAnalytics] = useState({});
+const [analytics, setAnalytics] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [searchTerm, setSearchTerm] = useState('');
   const [dragDisabled, setDragDisabled] = useState(false);
 
   // Load pipeline data
@@ -22,7 +23,7 @@ const Pipeline = () => {
       setLoading(true);
       setError(null);
       
-      const [dealsData, analyticsData] = await Promise.all([
+const [dealsData, analyticsData] = await Promise.all([
         dealService.getAll(),
         dealService.getPipelineAnalytics()
       ]);
@@ -36,6 +37,18 @@ const Pipeline = () => {
       setLoading(false);
     }
   };
+
+  // Filter deals based on search term
+  const filteredDeals = React.useMemo(() => {
+    if (!searchTerm.trim()) return deals;
+    
+    const term = searchTerm.toLowerCase();
+    return deals.filter(deal => 
+      deal.title?.toLowerCase().includes(term) ||
+      deal.company?.toLowerCase().includes(term) ||
+      deal.description?.toLowerCase().includes(term)
+    );
+  }, [deals, searchTerm]);
 
   useEffect(() => {
     loadPipelineData();
@@ -133,10 +146,10 @@ const Pipeline = () => {
 
 return (
     <div className="h-full flex flex-col bg-gradient-to-br from-slate-50 to-blue-50 pipeline-scroll-container overflow-y-auto">
-      {/* Header */}
-<div className="flex-shrink-0 p-6 border-b border-gray-200 bg-white/80 backdrop-blur-sm">
+{/* Header */}
+      <div className="flex-shrink-0 p-6 border-b border-gray-200 bg-white/80 backdrop-blur-sm">
         <div className="flex items-center justify-between">
-<div>
+          <div>
             <h1 className="text-base font-bold text-gray-900 flex items-center gap-2 mb-4">
               <ApperIcon name="Workflow" size={20} className="text-primary" />
               Sales Pipeline
@@ -145,13 +158,31 @@ return (
           
           <div className="flex items-center gap-4">
             <div className="text-sm text-gray-500">
-              Total Deals: <span className="font-semibold text-gray-900">{deals.length}</span>
+              Total Deals: <span className="font-semibold text-gray-900">{filteredDeals.length}</span>
             </div>
             <div className="text-sm text-gray-500">
               Total Value: <span className="font-semibold text-green-600">
-                ${deals.reduce((sum, deal) => sum + deal.value, 0).toLocaleString()}
+                ${filteredDeals.reduce((sum, deal) => sum + deal.value, 0).toLocaleString()}
               </span>
             </div>
+          </div>
+        </div>
+
+        {/* Search Bar */}
+        <div className="mt-4">
+          <div className="relative max-w-md">
+            <ApperIcon
+              name="Search"
+              size={16}
+              className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" 
+            />
+            <input
+              type="text"
+              placeholder="Search deals by title or company..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-colors bg-white"
+            />
           </div>
         </div>
 
@@ -175,9 +206,9 @@ return (
 
       {/* Pipeline Board */}
 <div className="flex-1 overflow-y-auto">
-          {deals.length === 0 ? (
+{filteredDeals.length === 0 ? (
           <div className="h-full flex items-center justify-center">
-            <Empty 
+            <Empty
               title="No Deals Found"
               description="Start by creating your first deal to see it in the pipeline."
             />

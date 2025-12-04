@@ -1,5 +1,4 @@
 import contactsData from "@/services/mockData/contacts.json";
-
 // Local storage key
 const CONTACTS_STORAGE_KEY = "contact_hub_contacts";
 
@@ -113,7 +112,7 @@ export const deleteContact = async (id) => {
   }
 };
 
-// Search contacts
+// Search contacts with name prioritization
 export const searchContacts = async (query) => {
   await new Promise(resolve => setTimeout(resolve, 200));
   
@@ -125,19 +124,32 @@ export const searchContacts = async (query) => {
       return [...contacts].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
     }
     
-    const filteredContacts = contacts.filter(contact => {
-      return (
-        contact.name.toLowerCase().includes(searchTerm) ||
+    // Separate name matches from other matches for prioritization
+    const nameMatches = [];
+    const otherMatches = [];
+    
+    contacts.forEach(contact => {
+      const nameMatch = contact.name.toLowerCase().includes(searchTerm);
+      const otherFieldsMatch = 
         contact.email.toLowerCase().includes(searchTerm) ||
         contact.company.toLowerCase().includes(searchTerm) ||
         contact.position.toLowerCase().includes(searchTerm) ||
         contact.notes.toLowerCase().includes(searchTerm) ||
-        contact.tags.some(tag => tag.toLowerCase().includes(searchTerm))
-      );
+        contact.tags.some(tag => tag.toLowerCase().includes(searchTerm));
+      
+      if (nameMatch) {
+        nameMatches.push(contact);
+      } else if (otherFieldsMatch) {
+        otherMatches.push(contact);
+      }
     });
     
+    // Return name matches first, then other matches
+    const filteredContacts = [...nameMatches, ...otherMatches];
     return filteredContacts.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
   } catch (error) {
+    throw new Error("Failed to search contacts");
+} catch (error) {
     throw new Error("Failed to search contacts");
   }
 };

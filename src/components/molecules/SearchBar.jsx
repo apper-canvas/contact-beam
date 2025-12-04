@@ -4,8 +4,8 @@ import ApperIcon from "@/components/ApperIcon";
 
 const SearchBar = ({ 
   value, 
-  onChange, 
-  placeholder = "Search contacts...",
+onChange, 
+  placeholder = "Search...",
   className 
 }) => {
 return (

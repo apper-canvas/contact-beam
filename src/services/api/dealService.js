@@ -251,6 +251,28 @@ export const getPipelineAnalytics = async () => {
   return analytics;
 };
 
+// Search deals by name/title
+export const searchByName = async (query) => {
+  await new Promise(resolve => setTimeout(resolve, 200));
+  
+  try {
+    const deals = await getAll();
+    const searchTerm = query.toLowerCase().trim();
+    
+    if (!searchTerm) {
+      return deals;
+    }
+    
+    return deals.filter(deal =>
+      deal.title?.toLowerCase().includes(searchTerm) ||
+      deal.company?.toLowerCase().includes(searchTerm) ||
+      deal.description?.toLowerCase().includes(searchTerm)
+    );
+  } catch (error) {
+    throw new Error("Failed to search deals");
+  }
+};
+
 export default {
   getAll,
   getDealsByStage,
@@ -260,6 +282,7 @@ export default {
   moveToStage,
   delete: deleteById,
   getPipelineAnalytics,
+  searchByName,
   DEAL_STAGES,
   AGE_THRESHOLDS,
   getDealAge,

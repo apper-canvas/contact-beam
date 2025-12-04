@@ -41,7 +41,7 @@ const ContactList = ({
     loadContacts();
   }, [refreshTrigger]);
 
-  useEffect(() => {
+useEffect(() => {
     const performSearch = async () => {
       if (!searchQuery.trim()) {
         setFilteredContacts(contacts);
@@ -49,6 +49,7 @@ const ContactList = ({
       }
 
       try {
+        // Enhanced search that prioritizes name matching
         const results = await searchContacts(searchQuery);
         setFilteredContacts(results);
       } catch (err) {
