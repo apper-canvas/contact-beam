@@ -171,7 +171,11 @@ const TaskManagement = () => {
 {/* Header Section */}
       <div className="bg-white border-b border-gray-200 p-6">
 <div className="flex items-center justify-between mb-4">
-          <div>
+<div>
+            <h1 className="text-base font-bold text-gray-900 flex items-center gap-2 mb-4">
+              <ApperIcon name="CheckSquare" size={20} className="text-primary" />
+              Tasks
+            </h1>
           </div>
           <Button onClick={handleCreateTask} className="bg-blue-600 hover:bg-blue-700 min-h-[44px]">
             <ApperIcon name="Plus" size={16} className="mr-2" />

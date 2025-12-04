@@ -213,7 +213,7 @@ return (
 <header className="sticky top-0 z-10 bg-white shadow-sm border-b border-gray-200 px-4 lg:px-6 py-3 lg:py-4">
           <div className="flex items-center justify-between mb-4">
             <div>
-              <h1 className="text-2xl lg:text-3xl font-bold text-gray-900 flex items-center gap-3">
+<h1 className="text-base font-bold text-gray-900 flex items-center gap-3">
                 {window.location.pathname === '/' || window.location.pathname === '/contacts' ? (
                   <>
                     <ApperIcon name="Users" size={32} className="text-primary" />

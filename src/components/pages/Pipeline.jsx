@@ -136,7 +136,11 @@ return (
       {/* Header */}
 <div className="flex-shrink-0 p-6 border-b border-gray-200 bg-white/80 backdrop-blur-sm">
         <div className="flex items-center justify-between">
-          <div>
+<div>
+            <h1 className="text-base font-bold text-gray-900 flex items-center gap-2 mb-4">
+              <ApperIcon name="Workflow" size={20} className="text-primary" />
+              Sales Pipeline
+            </h1>
           </div>
           
           <div className="flex items-center gap-4">
