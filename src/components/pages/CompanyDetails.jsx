@@ -1,7 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { companyService } from "@/services/api/companyService";
 import { toast } from "react-toastify";
-import { create, getAll, update } from "@/services/api/dealService";
 import ApperIcon from "@/components/ApperIcon";
 import Loading from "@/components/ui/Loading";
 import ErrorView from "@/components/ui/ErrorView";
@@ -201,7 +200,7 @@ return (
   );
 };
 
-export default CompanyList;
+export { CompanyList };
 
 const CompanyDetails = () => {
   const [companies, setCompanies] = useState([]);
