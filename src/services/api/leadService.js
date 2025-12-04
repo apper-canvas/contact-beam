@@ -40,7 +40,8 @@ export const getLeadById = async (id) => {
     throw new Error("Failed to load lead");
   }
 };
-
+// Export search function for global search integration
+export { searchLeads };
 // Create new lead
 export const createLead = async (leadData) => {
   await new Promise(resolve => setTimeout(resolve, 400));
@@ -127,10 +128,10 @@ export const searchLeads = async (query) => {
     }
     
     // Search across all relevant fields
-    const filteredLeads = leads.filter(lead => 
+const filteredLeads = leads.filter(lead => 
       lead.leadName.toLowerCase().includes(searchTerm) ||
       lead.email.toLowerCase().includes(searchTerm) ||
-      lead.company.toLowerCase().includes(searchTerm) ||
+      (typeof lead.company === 'string' ? lead.company.toLowerCase().includes(searchTerm) : false) ||
       lead.leadSource.toLowerCase().includes(searchTerm) ||
       lead.leadStatus.toLowerCase().includes(searchTerm) ||
       lead.owner.toLowerCase().includes(searchTerm) ||

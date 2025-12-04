@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useOutletContext } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { getAllLeads, createLead, updateLead, deleteLead, searchLeads } from '@/services/api/leadService';
+import { companyService } from '@/services/api/companyService';
 import ApperIcon from '@/components/ApperIcon';
 import Loading from '@/components/ui/Loading';
 import ErrorView from '@/components/ui/ErrorView';
@@ -655,6 +656,93 @@ const LeadDetail = ({ lead, onEdit, onDelete }) => {
 };
 
 // Lead Form Component
+const CompanyLookup = ({ value, onChange, error }) => {
+  const [companies, setCompanies] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [isOpen, setIsOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    loadCompanies();
+  }, []);
+
+  const loadCompanies = async () => {
+    try {
+      setLoading(true);
+      const allCompanies = await companyService.getAll();
+      setCompanies(allCompanies);
+    } catch (error) {
+      console.error('Failed to load companies:', error);
+      toast.error('Failed to load companies');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const filteredCompanies = companies.filter(company =>
+    company.Name?.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const selectedCompany = companies.find(c => c.Id === value);
+
+  return (
+    <div className="relative">
+      <div 
+        className={`w-full px-3 py-2 border rounded-lg bg-white cursor-pointer flex items-center justify-between ${
+          error ? 'border-red-300' : 'border-gray-300 hover:border-blue-400'
+        }`}
+        onClick={() => setIsOpen(!isOpen)}
+      >
+        <span className={selectedCompany ? 'text-gray-900' : 'text-gray-500'}>
+          {selectedCompany ? selectedCompany.Name : 'Select a company...'}
+        </span>
+        <ApperIcon name={isOpen ? "ChevronUp" : "ChevronDown"} size={16} className="text-gray-400" />
+      </div>
+      
+      {isOpen && (
+        <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-hidden">
+          <div className="p-2 border-b">
+            <input
+              type="text"
+              placeholder="Search companies..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-400"
+              autoFocus
+            />
+          </div>
+          <div className="overflow-y-auto max-h-48">
+            {loading ? (
+              <div className="p-4 text-center text-gray-500">Loading companies...</div>
+            ) : filteredCompanies.length > 0 ? (
+              filteredCompanies.map(company => (
+                <div
+                  key={company.Id}
+                  className="px-3 py-2 hover:bg-blue-50 cursor-pointer border-b border-gray-100 last:border-b-0"
+                  onClick={() => {
+                    onChange(company.Id);
+                    setIsOpen(false);
+                    setSearchTerm('');
+                  }}
+                >
+                  <div className="font-medium text-gray-900">{company.Name}</div>
+                  {company.Industry && (
+                    <div className="text-sm text-gray-500">{company.Industry}</div>
+                  )}
+                </div>
+              ))
+            ) : (
+              <div className="p-4 text-center text-gray-500">
+                {searchTerm ? 'No companies found' : 'No companies available'}
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
 const LeadForm = ({ initialData = null, onSubmit, onCancel, loading = false }) => {
   const [formData, setFormData] = useState({
     leadName: "",
@@ -662,7 +750,7 @@ const LeadForm = ({ initialData = null, onSubmit, onCancel, loading = false }) =
     phone: "",
     leadSource: "Website",
     leadStatus: "New",
-    company: "",
+    company: null,
     owner: "",
     priority: "Medium",
     notes: ""
@@ -670,7 +758,7 @@ const LeadForm = ({ initialData = null, onSubmit, onCancel, loading = false }) =
 
   const [errors, setErrors] = useState({});
 
-  useEffect(() => {
+useEffect(() => {
     if (initialData) {
       setFormData({
         leadName: initialData.leadName || "",
@@ -678,7 +766,7 @@ const LeadForm = ({ initialData = null, onSubmit, onCancel, loading = false }) =
         phone: initialData.phone || "",
         leadSource: initialData.leadSource || "Website",
         leadStatus: initialData.leadStatus || "New",
-        company: initialData.company || "",
+        company: initialData.companyId || null,
         owner: initialData.owner || "",
         priority: initialData.priority || "Medium",
         notes: initialData.notes || ""
@@ -686,7 +774,7 @@ const LeadForm = ({ initialData = null, onSubmit, onCancel, loading = false }) =
     }
   }, [initialData]);
 
-  const handleChange = (field, value) => {
+const handleChange = (field, value) => {
     setFormData(prev => ({ ...prev, [field]: value }));
     if (errors[field]) {
       setErrors(prev => ({ ...prev, [field]: "" }));
@@ -706,7 +794,7 @@ const LeadForm = ({ initialData = null, onSubmit, onCancel, loading = false }) =
       newErrors.email = "Please enter a valid email address";
     }
 
-    if (!formData.company.trim()) {
+if (!formData.company) {
       newErrors.company = "Company is required";
     }
 
@@ -741,7 +829,7 @@ const LeadForm = ({ initialData = null, onSubmit, onCancel, loading = false }) =
   ];
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
+<form onSubmit={handleSubmit} className="space-y-6">
       {/* Basic Information */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
@@ -791,10 +879,9 @@ const LeadForm = ({ initialData = null, onSubmit, onCancel, loading = false }) =
           <label className="block text-sm font-medium text-gray-700 mb-2">
             Company *
           </label>
-          <Input
+          <CompanyLookup
             value={formData.company}
-            onChange={(e) => handleChange("company", e.target.value)}
-            placeholder="Enter company name"
+            onChange={(value) => handleChange("company", value)}
             error={errors.company}
           />
           {errors.company && (
