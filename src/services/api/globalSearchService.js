@@ -13,7 +13,7 @@ export const globalSearch = async (query) => {
     };
   }
 
-  const searchTerm = query.trim();
+const searchTerm = query.trim();
 
   try {
     // Search all entities concurrently
@@ -21,7 +21,7 @@ export const globalSearch = async (query) => {
       searchContacts(searchTerm),
       companyService.searchByName(searchTerm),
       dealService.searchByName(searchTerm),
-      taskService.searchByName(searchTerm)
+      taskService.searchTasks(searchTerm)
     ]);
 
     return {
