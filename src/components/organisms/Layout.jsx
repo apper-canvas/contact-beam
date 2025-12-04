@@ -92,7 +92,7 @@ const handleSearchBlur = (e) => {
     setTimeout(() => {
       // Check if activeElement exists and currentTarget contains it
       const activeElement = document.activeElement;
-      if (!activeElement || !e.currentTarget.contains(activeElement)) {
+      if (!activeElement || !e.currentTarget || !e.currentTarget.contains(activeElement)) {
         setShowResults(false);
       }
     }, 200);
