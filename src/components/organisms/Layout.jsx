@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Outlet, useLocation, useNavigate, useOutletContext } from "react-router-dom";
+import { Outlet, useLocation, useNavigate, useOutletContext, NavLink } from "react-router-dom";
 import { toast } from "react-toastify";
 import { contextualGlobalSearch, globalSearch } from "@/services/api/globalSearchService";
 import { createContact, deleteContact, updateContact } from "@/services/api/contactService";
@@ -258,13 +258,13 @@ return (
       {/* Mobile Menu Button */}
 <div className="lg:hidden bg-white border-b border-gray-200 px-4 py-3 flex items-center justify-between">
         <h1 className="text-xl font-semibold text-gray-900">
-          {window.location.pathname === '/' || window.location.pathname === '/contacts' 
+{location.pathname === '/' || location.pathname === '/contacts' 
             ? 'Contacts'
-            : window.location.pathname === '/companies'
+            : location.pathname === '/companies'
             ? 'Companies'
-            : window.location.pathname === '/pipeline'
+            : location.pathname === '/pipeline'
             ? 'Sales Pipeline'
-            : window.location.pathname === '/tasks'
+            : location.pathname === '/tasks'
             ? 'Tasks'
             : 'Contact Hub'
           }
@@ -304,34 +304,34 @@ return (
           {/* Navigation Menu */}
 <nav className="flex-1 p-4">
             <div className="space-y-2">
-              <a
-                href="/"
-                className={`flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors ${window.location.pathname === '/' || window.location.pathname === '/contacts' ? 'bg-primary/10 text-primary border-r-2 border-primary' : ''}`}
+              <NavLink
+                to="/"
+                className={({ isActive }) => `flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors ${isActive ? 'bg-primary/10 text-primary border-r-2 border-primary' : ''}`}
               >
                 <ApperIcon name="Users" size={20} />
                 <span className="font-medium">Contacts</span>
-              </a>
-              <a
-                href="/companies"
-                className={`flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors ${window.location.pathname === '/companies' ? 'bg-primary/10 text-primary border-r-2 border-primary' : ''}`}
+              </NavLink>
+              <NavLink
+                to="/companies"
+                className={({ isActive }) => `flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors ${isActive ? 'bg-primary/10 text-primary border-r-2 border-primary' : ''}`}
               >
                 <ApperIcon name="Building" size={20} />
                 <span className="font-medium">Companies</span>
-</a>
-              <a
-                href="/pipeline"
-                className={`flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors ${window.location.pathname === '/pipeline' ? 'bg-primary/10 text-primary border-r-2 border-primary' : ''}`}
+              </NavLink>
+              <NavLink
+                to="/pipeline"
+                className={({ isActive }) => `flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors ${isActive ? 'bg-primary/10 text-primary border-r-2 border-primary' : ''}`}
               >
                 <ApperIcon name="Workflow" size={20} />
                 <span className="font-medium">Pipeline</span>
-              </a>
-              <a
-                href="/tasks"
-                className={`flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors ${window.location.pathname === '/tasks' ? 'bg-primary/10 text-primary border-r-2 border-primary' : ''}`}
+              </NavLink>
+              <NavLink
+                to="/tasks"
+                className={({ isActive }) => `flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors ${isActive ? 'bg-primary/10 text-primary border-r-2 border-primary' : ''}`}
               >
                 <ApperIcon name="CheckSquare" size={20} />
                 <span className="font-medium">Tasks</span>
-              </a>
+              </NavLink>
             </div>
 </nav>
           </div>
@@ -483,7 +483,7 @@ return (
 {/* User Menu */}
             <div className="flex items-center space-x-2 lg:space-x-4 lg:ml-6">
 {/* Show Add Contact button only on contacts page */}
-              {(window.location.pathname === '/' || window.location.pathname === '/contacts') && (
+{(location.pathname === '/' || location.pathname === '/contacts') && (
                 <button
                   onClick={handleAddContact}
                   className="inline-flex items-center space-x-2 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors font-medium"
@@ -492,8 +492,8 @@ return (
                   <span>Add Contact</span>
                 </button>
               )}
-{/* Show Add Company button only on companies page */}
-              {window.location.pathname === '/companies' && (
+              {/* Show Add Company button only on companies page */}
+              {location.pathname === '/companies' && (
                 <button
                   onClick={() => {
                     if (pageModalHandlers.handleAddCompany) {
@@ -508,7 +508,7 @@ return (
               )}
 
               {/* Show Add Task button only on tasks page */}
-              {window.location.pathname === '/tasks' && (
+              {location.pathname === '/tasks' && (
                 <button
                   onClick={() => {
                     if (pageModalHandlers.handleCreateTask) {
@@ -523,7 +523,7 @@ return (
               )}
 
               {/* Show Add Deal button only on pipeline page */}
-              {window.location.pathname === '/pipeline' && (
+              {location.pathname === '/pipeline' && (
                 <button
                   onClick={() => {
                     // TODO: Implement add deal functionality
