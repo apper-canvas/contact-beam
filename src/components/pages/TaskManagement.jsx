@@ -153,15 +153,48 @@ const [viewMode, setViewMode] = useState('grid'); // 'grid' or 'list'
   return (
     <div className="h-full flex flex-col bg-background">
       {/* Header */}
-      <div className="bg-white border-b border-gray-200 p-6">
-        <div className="flex items-center justify-between mb-4">
-          <div>
-            <h1 className="text-2xl font-bold text-gray-900 flex items-center">
-              <ApperIcon name="CheckSquare" size={28} className="mr-3 text-blue-600" />
-              Task Management
-            </h1>
-            <p className="text-gray-600 mt-1">Organize and track your tasks efficiently</p>
-</div>
+<div className="bg-white border-b border-gray-200 p-6">
+        {/* Search, Filters, and Actions in Single Row */}
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+          {/* Left: Search and Filters */}
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 flex-1">
+            <div className="flex-1 max-w-md">
+              <SearchBar
+                value={searchTerm}
+                onChange={setSearchTerm}
+                placeholder="Search tasks by title or description..."
+                className="w-full"
+              />
+            </div>
+            
+            <div className="flex space-x-3">
+              <select
+                value={statusFilter}
+                onChange={(e) => setStatusFilter(e.target.value)}
+                className="px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+              >
+                {statusOptions.map(option => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+              
+              <select
+                value={sortBy}
+                onChange={(e) => handleSortChange(e.target.value)}
+                className="px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+              >
+                {sortOptions.map(option => (
+                  <option key={option.value} value={option.value}>
+                    Sort by {option.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+
+          {/* Right: View Toggle and Create Button */}
           <div className="flex items-center space-x-3">
             <div className="flex items-center bg-gray-100 rounded-lg p-1">
               <button
@@ -191,44 +224,6 @@ const [viewMode, setViewMode] = useState('grid'); // 'grid' or 'list'
               <ApperIcon name="Plus" size={16} className="mr-2" />
               Create Task
             </Button>
-          </div>
-        </div>
-
-        {/* Search and Filters */}
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between space-y-4 md:space-y-0 md:space-x-4">
-          <div className="flex-1 max-w-md">
-            <SearchBar
-              value={searchTerm}
-              onChange={setSearchTerm}
-              placeholder="Search tasks by title or description..."
-              className="w-full"
-            />
-          </div>
-          
-          <div className="flex space-x-4">
-            <select
-              value={statusFilter}
-              onChange={(e) => setStatusFilter(e.target.value)}
-              className="px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
-            >
-              {statusOptions.map(option => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
-            
-            <select
-              value={sortBy}
-              onChange={(e) => handleSortChange(e.target.value)}
-              className="px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
-            >
-              {sortOptions.map(option => (
-                <option key={option.value} value={option.value}>
-                  Sort by {option.label}
-                </option>
-              ))}
-            </select>
           </div>
         </div>
       </div>
