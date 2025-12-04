@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
-import dealService from '@/services/api/dealService';
-import DealCard from '@/components/molecules/DealCard';
-import StageHeader from '@/components/molecules/StageHeader';
-import Loading from '@/components/ui/Loading';
-import ErrorView from '@/components/ui/ErrorView';
-import Empty from '@/components/ui/Empty';
-import ApperIcon from '@/components/ApperIcon';
-import { toast } from 'react-toastify';
+import React, { useEffect, useState } from "react";
+import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
+import { toast } from "react-toastify";
+import dealService, { getAll, getDealsByStage, getPipelineAnalytics, moveToStage } from "@/services/api/dealService";
+import ApperIcon from "@/components/ApperIcon";
+import Loading from "@/components/ui/Loading";
+import ErrorView from "@/components/ui/ErrorView";
+import Empty from "@/components/ui/Empty";
+import DealCard from "@/components/molecules/DealCard";
+import StageHeader from "@/components/molecules/StageHeader";
 
 const Pipeline = () => {
   const [deals, setDeals] = useState([]);
@@ -187,8 +187,8 @@ const Pipeline = () => {
           </div>
 ) : (
           <DragDropContext onDragEnd={handleDragEnd}>
-            <div className="h-full p-6 pipeline-grid-container pipeline-scroll-container">
-              <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 h-full min-w-fit">
+<div className="h-full p-6 pipeline-grid-container pipeline-scroll-container">
+              <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 h-full min-w-fit">
                 {Object.values(dealService.DEAL_STAGES).map((stage) => {
                   const stageDeals = getDealsByStage(stage.id);
                   const stageAnalytics = analytics[stage.id] || {};
@@ -209,7 +209,7 @@ const Pipeline = () => {
                             ref={provided.innerRef}
                             {...provided.droppableProps}
                             className={`
-                              flex-1 p-4 rounded-lg min-h-[200px] transition-all duration-200 pipeline-stage-scroll
+                              flex-1 p-5 rounded-lg min-h-[200px] transition-all duration-200 pipeline-stage-scroll space-y-4
                               ${snapshot.isDraggingOver 
                                 ? 'bg-blue-50 border-2 border-blue-300 border-dashed' 
                                 : 'bg-gray-50 border-2 border-gray-200 border-dashed'
