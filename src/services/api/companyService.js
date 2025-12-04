@@ -77,3 +77,6 @@ export const companyService = {
     return { ...deletedCompany };
   }
 };
+
+// Default export for compatibility with existing imports
+export default companyService;
