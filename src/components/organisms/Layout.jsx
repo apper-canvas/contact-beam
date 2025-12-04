@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, useOutletContext } from "react-router-dom";
 import { toast } from "react-toastify";
 import { createContact, deleteContact, updateContact } from "@/services/api/contactService";
 import ApperIcon from "@/components/ApperIcon";
@@ -14,6 +14,12 @@ const Layout = () => {
   const [loading, setLoading] = useState(false);
   const [refreshTrigger, setRefreshTrigger] = useState(0);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  
+  // Modal control functions from child pages
+  const [pageModalHandlers, setPageModalHandlers] = useState({
+    handleAddCompany: null,
+    handleCreateTask: null
+  });
   // App-level handlers
   const refreshContacts = () => {
     setRefreshTrigger(prev => prev + 1);
@@ -95,7 +101,7 @@ const Layout = () => {
     setContactToDelete(null);
   };
 
-  // Outlet context to share with child routes
+// Outlet context to share with child routes
   const outletContext = {
     selectedContact,
     showContactForm,
@@ -111,7 +117,9 @@ const Layout = () => {
     handleFormSubmit,
     handleFormCancel,
     confirmDelete,
-    cancelDelete
+    cancelDelete,
+    // Modal handlers for pages to register their functions
+    setPageModalHandlers
   };
 
 return (
@@ -221,13 +229,13 @@ return (
                   <span>Add Contact</span>
                 </button>
               )}
-              
 {/* Show Add Company button only on companies page */}
               {window.location.pathname === '/companies' && (
                 <button
                   onClick={() => {
-                    // TODO: Implement add company functionality
-                    console.log('Add company clicked');
+                    if (pageModalHandlers.handleAddCompany) {
+                      pageModalHandlers.handleAddCompany();
+                    }
                   }}
                   className="inline-flex items-center space-x-2 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors font-medium"
                 >
@@ -240,8 +248,9 @@ return (
               {window.location.pathname === '/tasks' && (
                 <button
                   onClick={() => {
-                    // TODO: Implement add task functionality
-                    console.log('Add task clicked');
+                    if (pageModalHandlers.handleCreateTask) {
+                      pageModalHandlers.handleCreateTask();
+                    }
                   }}
                   className="inline-flex items-center space-x-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
                 >

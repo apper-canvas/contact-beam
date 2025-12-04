@@ -1,14 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import { toast } from 'react-toastify';
-import taskService from '@/services/api/taskService';
-import TaskList from '@/components/molecules/TaskList';
-import TaskForm from '@/components/molecules/TaskForm';
-import SearchBar from '@/components/molecules/SearchBar';
-import ConfirmDialog from '@/components/molecules/ConfirmDialog';
-import Button from '@/components/atoms/Button';
-import Loading from '@/components/ui/Loading';
-import ErrorView from '@/components/ui/ErrorView';
-import ApperIcon from '@/components/ApperIcon';
+import React, { useEffect, useState } from "react";
+import { useOutletContext } from "react-router-dom";
+import { toast } from "react-toastify";
+import { create, getAll, update } from "@/services/api/dealService";
+import taskService from "@/services/api/taskService";
+import ApperIcon from "@/components/ApperIcon";
+import Loading from "@/components/ui/Loading";
+import ErrorView from "@/components/ui/ErrorView";
+import Button from "@/components/atoms/Button";
+import SearchBar from "@/components/molecules/SearchBar";
+import TaskForm from "@/components/molecules/TaskForm";
+import TaskList from "@/components/molecules/TaskList";
+import ConfirmDialog from "@/components/molecules/ConfirmDialog";
 
 const TaskManagement = () => {
   const [tasks, setTasks] = useState([]);
@@ -17,7 +19,8 @@ const TaskManagement = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('All');
   const [sortBy, setSortBy] = useState('dueDate');
-const [viewMode, setViewMode] = useState('grid'); // 'grid' or 'list'
+  const [viewMode, setViewMode] = useState('grid'); // 'grid' or 'list'
+  
   // Modal states
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [isFormLoading, setIsFormLoading] = useState(false);
@@ -27,6 +30,18 @@ const [viewMode, setViewMode] = useState('grid'); // 'grid' or 'list'
   const [taskToDelete, setTaskToDelete] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false);
 
+  // Get the outlet context to register modal handlers
+  const outletContext = useOutletContext();
+
+  // Register modal handlers with Layout
+  useEffect(() => {
+    if (outletContext?.setPageModalHandlers) {
+      outletContext.setPageModalHandlers(prev => ({
+        ...prev,
+        handleCreateTask: handleCreateTask
+      }));
+    }
+  }, [outletContext]);
   useEffect(() => {
     loadTasks();
   }, []);

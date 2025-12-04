@@ -46,20 +46,20 @@ const CompanyList = () => {
   };
 
   // Get unique industries for filter dropdown
-  const industries = useMemo(() => {
-    const uniqueIndustries = [...new Set(companies.map(company => company.industry))];
+const industries = useMemo(() => {
+    const uniqueIndustries = [...new Set(companies.map(company => company.industry).filter(Boolean))];
     return uniqueIndustries.sort();
   }, [companies]);
 
   // Filter and sort companies
   const filteredAndSortedCompanies = useMemo(() => {
-    let filtered = companies.filter(company => {
+let filtered = companies.filter(company => {
       const matchesSearch = searchTerm === '' || 
-        company.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        company.industry.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        company.location.toLowerCase().includes(searchTerm.toLowerCase());
+        company.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        company.industry?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        company.location?.toLowerCase().includes(searchTerm.toLowerCase());
       
-      const matchesIndustry = industryFilter === '' || company.industry === industryFilter;
+const matchesIndustry = industryFilter === '' || company.industry === industryFilter;
       
       return matchesSearch && matchesIndustry;
     });
@@ -218,23 +218,36 @@ const CompanyDetails = () => {
   const [companyToDelete, setCompanyToDelete] = useState(null);
   const [formLoading, setFormLoading] = useState(false);
 
+  // Modal state for company details
+  const [showCompanyModal, setShowCompanyModal] = useState(false);
+// Get the outlet context to register modal handlers
+  // const outletContext = useOutletContext(); // Commented out as useOutletContext is not imported
   // Load companies on component mount
   useEffect(() => {
     loadCompanies();
   }, []);
 
+// Register modal handlers with Layout
+  // useEffect(() => {
+  //   if (outletContext?.setPageModalHandlers) {
+  //     outletContext.setPageModalHandlers(prev => ({
+  //       ...prev,
+  //       handleAddCompany: handleAddCompany
+  //     }));
+  //   }
+  // }, [outletContext]);
   // Filter and sort companies when dependencies change
   useEffect(() => {
     let filtered = [...companies];
 
     // Apply search filter
     if (searchTerm.trim()) {
-      const term = searchTerm.toLowerCase();
+const term = searchTerm.toLowerCase();
       filtered = filtered.filter(company => 
         company.name?.toLowerCase().includes(term) ||
         company.industry?.toLowerCase().includes(term) ||
         company.location?.toLowerCase().includes(term) ||
-        (company.website && company.website.toLowerCase().includes(term))
+        company.website?.toLowerCase().includes(term)
       );
     }
 
@@ -251,9 +264,9 @@ const CompanyDetails = () => {
           aVal = a.industry?.toLowerCase() || '';
           bVal = b.industry?.toLowerCase() || '';
           break;
-        case 'employeeCount':
-          aVal = parseInt(a.employeeCount) || 0;
-          bVal = parseInt(b.employeeCount) || 0;
+case 'employeeCount':
+          aVal = parseInt(a.employeeCount || 0) || 0;
+          bVal = parseInt(b.employeeCount || 0) || 0;
           break;
         case 'createdAt':
           aVal = new Date(a.createdAt || 0).getTime();
@@ -287,7 +300,7 @@ const CompanyDetails = () => {
     } finally {
       setLoading(false);
     }
-};
+  };
 
   const handleAddCompany = () => {
     setEditingCompany(null);
@@ -303,13 +316,11 @@ const CompanyDetails = () => {
     setCompanyToDelete(company);
     setShowDeleteDialog(true);
   };
-const handleCompanyClick = (company) => {
+
+  const handleCompanyClick = (company) => {
     setSelectedCompany(company);
     setShowCompanyModal(true);
   };
-
-  // Modal state for company details
-  const [showCompanyModal, setShowCompanyModal] = useState(false);
 
   const handleCloseModal = () => {
     setShowCompanyModal(false);
@@ -399,7 +410,8 @@ const handleCompanyClick = (company) => {
       />
     );
   }
-return (
+
+  return (
     <div className="h-full flex flex-col bg-background">
       {/* Header */}
       <div className="p-4 lg:p-6 border-b border-gray-200 bg-surface">
@@ -456,138 +468,147 @@ return (
           </div>
         </div>
       </div>
-    {/* Companies Table */}
-    <div className="flex-1 overflow-hidden bg-surface">
-        {filteredCompanies.length === 0 ? <div className="h-full flex items-center justify-center">
+
+      {/* Companies Table */}
+      <div className="flex-1 overflow-hidden bg-surface">
+        {filteredCompanies.length === 0 ? (
+          <div className="h-full flex items-center justify-center">
             <div className="text-center text-gray-500">
-                <ApperIcon name="Building" size={48} className="mx-auto mb-4 text-gray-400" />
-                <p className="text-lg mb-2">No companies found</p>
-                <p className="text-sm">
-                    {companies.length === 0 ? "Add your first company to get started" : "Try adjusting your search terms"}
-                </p>
+              <ApperIcon name="Building" size={48} className="mx-auto mb-4 text-gray-400" />
+              <p className="text-lg mb-2">No companies found</p>
+              <p className="text-sm">
+                {companies.length === 0 ? "Add your first company to get started" : "Try adjusting your search terms"}
+              </p>
             </div>
-        </div> : <div className="h-full overflow-auto">
+          </div>
+        ) : (
+          <div className="h-full overflow-auto">
             <table className="w-full">
-                <thead className="bg-gray-50 sticky top-0">
-                    <tr>
-                        <th
-                            className="px-6 py-4 text-left text-sm font-medium text-gray-500 uppercase tracking-wider border-b border-gray-200">Company
-                                              </th>
-                        <th
-                            className="px-6 py-4 text-left text-sm font-medium text-gray-500 uppercase tracking-wider border-b border-gray-200">Industry
-                                              </th>
-                        <th
-                            className="px-6 py-4 text-left text-sm font-medium text-gray-500 uppercase tracking-wider border-b border-gray-200">Location
-                                              </th>
-                        <th
-                            className="px-6 py-4 text-left text-sm font-medium text-gray-500 uppercase tracking-wider border-b border-gray-200">Size
-                                              </th>
-                        <th
-                            className="px-6 py-4 text-left text-sm font-medium text-gray-500 uppercase tracking-wider border-b border-gray-200">Contact
-                                              </th>
-                    </tr>
-                </thead>
-                <tbody className="bg-white divide-y divide-gray-200">
-                    {filteredCompanies.map(company => <tr
-                        key={company.Id}
-                        onClick={() => handleCompanyClick(company)}
-                        className="hover:bg-gray-50 cursor-pointer transition-colors">
-                        <td className="px-6 py-4 whitespace-nowrap">
-                            <div className="flex items-center">
-                                <div className="flex-shrink-0">
-                                    <div
-                                        className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
-                                        <ApperIcon name="Building" size={20} className="text-primary" />
-                                    </div>
-                                </div>
-                                <div className="ml-4">
-                                    <div className="text-sm font-medium text-gray-900">
-                                        {company.name}
-                                    </div>
-                                    {company.website && <div className="text-sm text-gray-500">
-                                        {company.website}
-                                    </div>}
-                                </div>
+              <thead className="bg-gray-50 sticky top-0">
+                <tr>
+                  <th className="px-6 py-4 text-left text-sm font-medium text-gray-500 uppercase tracking-wider border-b border-gray-200">
+                    Company
+                  </th>
+                  <th className="px-6 py-4 text-left text-sm font-medium text-gray-500 uppercase tracking-wider border-b border-gray-200">
+                    Industry
+                  </th>
+                  <th className="px-6 py-4 text-left text-sm font-medium text-gray-500 uppercase tracking-wider border-b border-gray-200">
+                    Location
+                  </th>
+                  <th className="px-6 py-4 text-left text-sm font-medium text-gray-500 uppercase tracking-wider border-b border-gray-200">
+                    Size
+                  </th>
+                  <th className="px-6 py-4 text-left text-sm font-medium text-gray-500 uppercase tracking-wider border-b border-gray-200">
+                    Contact
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="bg-white divide-y divide-gray-200">
+                {filteredCompanies.map(company => (
+                  <tr
+                    key={company.Id}
+                    onClick={() => handleCompanyClick(company)}
+                    className="hover:bg-gray-50 cursor-pointer transition-colors"
+                  >
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="flex items-center">
+                        <div className="flex-shrink-0">
+                          <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+                            <ApperIcon name="Building" size={20} className="text-primary" />
+                          </div>
+                        </div>
+                        <div className="ml-4">
+                          <div className="text-sm font-medium text-gray-900">
+                            {company.name}
+                          </div>
+                          {company.website && (
+                            <div className="text-sm text-gray-500">
+                              {company.website}
                             </div>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                            <div className="text-sm text-gray-900">{company.industry}</div>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                            <div className="flex items-center text-sm text-gray-900">
-                                <ApperIcon name="MapPin" size={14} className="mr-1 text-gray-400" />
-                                {company.location}
-                            </div>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                            <div className="text-sm text-gray-900">
-                                {company.employeeCount ? company.employeeCount >= 1000 ? `${(company.employeeCount / 1000).toFixed(1)}k employees` : `${company.employeeCount} employees` : "Not specified"}
-                            </div>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                            <div className="text-sm text-gray-900">
-                                {company.email && <div className="flex items-center">
-                                    <ApperIcon name="Mail" size={14} className="mr-1 text-gray-400" />
-                                    {company.email}
-                                </div>}
-                                {company.phone && !company.email && <div className="flex items-center">
-                                    <ApperIcon name="Phone" size={14} className="mr-1 text-gray-400" />
-                                    {company.phone}
-                                </div>}
-                                {!company.email && !company.phone && <span className="text-gray-400">Not provided</span>}
-                            </div>
-                        </td>
-                    </tr>)}
-                </tbody>
+                          )}
+                        </div>
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="text-sm text-gray-900">{company.industry}</div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="flex items-center text-sm text-gray-900">
+                        <ApperIcon name="MapPin" size={14} className="mr-1 text-gray-400" />
+                        {company.location}
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="text-sm text-gray-900">
+                        {company.employeeCount 
+                          ? company.employeeCount >= 1000 
+                            ? `${(company.employeeCount / 1000).toFixed(1)}k employees` 
+                            : `${company.employeeCount} employees` 
+                          : "Not specified"}
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="text-sm text-gray-900">
+                        {company.email && (
+                          <div className="flex items-center">
+                            <ApperIcon name="Mail" size={14} className="mr-1 text-gray-400" />
+                            {company.email}
+                          </div>
+                        )}
+                        {company.phone && !company.email && (
+                          <div className="flex items-center">
+                            <ApperIcon name="Phone" size={14} className="mr-1 text-gray-400" />
+                            {company.phone}
+                          </div>
+                        )}
+                        {!company.email && !company.phone && (
+                          <span className="text-gray-400">Not provided</span>
+                        )}
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
             </table>
-        </div>}
-    </div>
-{/* Company Details Modal */}
-    <CompanyModal
-      isOpen={showCompanyModal}
-      onClose={handleCloseModal}
-      company={selectedCompany}
-      onEdit={(updatedCompany) => {
-        // Update the company in the companies list
-        setCompanies(prev => prev.map(c => 
-          c.Id === updatedCompany.Id ? updatedCompany : c
-        ));
-        // Update selected company if it's the same one
-        setSelectedCompany(updatedCompany);
-      }}
-      onDelete={(deletedCompany) => {
-        // Remove company from the list
-        setCompanies(prev => prev.filter(c => c.Id !== deletedCompany.Id));
-        // Clear selected company and close modal
-        setSelectedCompany(null);
-        setShowCompanyModal(false);
-      }}
-    />
-    {/* Company Details - Right Side */}
-    {selectedCompany ? <CompanyDetailView
+          </div>
+        )}
+      </div>
+
+      {/* Company Details Modal */}
+      <CompanyModal
+        isOpen={showCompanyModal}
+        onClose={handleCloseModal}
         company={selectedCompany}
-        onEdit={handleEditCompany}
-        onDelete={handleDeleteCompany} /> : <div className="flex-1 flex items-center justify-center bg-gray-50">
-        <div className="text-center text-gray-500">
-            <ApperIcon name="Building" size={64} className="mx-auto mb-4 text-gray-400" />
-            <h3 className="text-lg font-medium mb-2">No Company Selected</h3>
-            <p className="text-sm">Choose a company from the list to view details</p>
-        </div>
-    </div>}
-    {/* Company Form Modal */}
-    <Modal
+        onEdit={(updatedCompany) => {
+          setCompanies(prev => prev.map(c => 
+            c.Id === updatedCompany.Id ? updatedCompany : c
+          ));
+          setSelectedCompany(updatedCompany);
+        }}
+        onDelete={(deletedCompany) => {
+          setCompanies(prev => prev.filter(c => c.Id !== deletedCompany.Id));
+          setSelectedCompany(null);
+          setShowCompanyModal(false);
+        }}
+      />
+
+      {/* Company Form Modal */}
+      <Modal
         isOpen={showCompanyForm}
         onClose={handleFormCancel}
         title={editingCompany ? "Edit Company" : "Add New Company"}
-        size="lg">
+        size="lg"
+      >
         <CompanyForm
-            initialData={editingCompany}
-            onSubmit={handleFormSubmit}
-            onCancel={handleFormCancel}
-            loading={formLoading} />
-    </Modal>
-    {/* Delete Confirmation Dialog */}
-    <ConfirmDialog
+          initialData={editingCompany}
+          onSubmit={handleFormSubmit}
+          onCancel={handleFormCancel}
+          loading={formLoading}
+        />
+      </Modal>
+
+      {/* Delete Confirmation Dialog */}
+      <ConfirmDialog
         isOpen={showDeleteDialog}
         onClose={cancelDelete}
         onConfirm={confirmDelete}
@@ -596,10 +617,13 @@ return (
         confirmText="Delete Company"
         cancelText="Cancel"
         variant="danger"
-        loading={formLoading} />
+        loading={formLoading}
+      />
 </div>
   );
 };
+
+export default CompanyDetails;
 
 // Company Detail View Component (Modified for modal use)
 const CompanyDetailView = ({ company, onEdit, onDelete }) => {
