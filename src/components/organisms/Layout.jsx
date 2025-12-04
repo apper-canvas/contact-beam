@@ -25,10 +25,11 @@ const [refreshTrigger, setRefreshTrigger] = useState(0);
 const location = useLocation();
   
   // Determine current context based on route
-  const getCurrentContext = () => {
+const getCurrentContext = () => {
     const path = location.pathname;
     if (path === '/' || path === '/contacts') return 'contacts';
-    if (path === '/companies') return 'companies';  
+    if (path === '/companies') return 'companies';
+    if (path === '/leads') return 'leads';
     if (path === '/pipeline') return 'deals';
     if (path === '/tasks') return 'tasks';
     return 'all';
@@ -37,16 +38,18 @@ const location = useLocation();
   const getSearchPlaceholder = () => {
     const context = getCurrentContext();
     switch (context) {
-      case 'contacts':
-        return 'Search contacts, companies, deals, and tasks...';
+case 'contacts':
+        return 'Search contacts, companies, leads, deals, and tasks...';
       case 'companies':
-        return 'Search companies, contacts, deals, and tasks...';
+        return 'Search companies, contacts, leads, deals, and tasks...';
+      case 'leads':
+        return 'Search leads, contacts, companies, deals, and tasks...';
       case 'deals':
-        return 'Search deals, contacts, companies, and tasks...';
+        return 'Search deals, contacts, companies, leads, and tasks...';
       case 'tasks':
-        return 'Search tasks, contacts, companies, and deals...';
+        return 'Search tasks, contacts, companies, leads, and deals...';
       default:
-        return 'Search across contacts, companies, deals, and tasks...';
+        return 'Search across contacts, companies, leads, deals, and tasks...';
     }
   };
   
@@ -103,6 +106,11 @@ const currentContext = getCurrentContext();
       case 'companies':
         if (currentContext !== 'companies') {
           navigate('/companies');
+        }
+        break;
+case 'leads':
+        if (currentContext !== 'leads') {
+          navigate('/leads');
         }
         break;
       case 'deals':
@@ -318,6 +326,13 @@ return (
                 <ApperIcon name="Building" size={20} />
                 <span className="font-medium">Companies</span>
               </NavLink>
+<NavLink
+                to="/leads"
+                className={({ isActive }) => `flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors ${isActive ? 'bg-primary/10 text-primary border-r-2 border-primary' : ''}`}
+              >
+                <ApperIcon name="Target" size={20} />
+                <span className="font-medium">Leads</span>
+              </NavLink>
               <NavLink
                 to="/pipeline"
                 className={({ isActive }) => `flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors ${isActive ? 'bg-primary/10 text-primary border-r-2 border-primary' : ''}`}
@@ -344,7 +359,7 @@ return (
         <header className="sticky top-0 z-10 bg-white shadow-sm border-b border-gray-200 px-4 lg:px-6 py-3 lg:py-4">
           <div className="flex items-center justify-between mb-4">
             <div>
-              <h1 className="text-base font-bold text-gray-900 flex items-center gap-3">
+<h1 className="text-base font-bold text-gray-900 flex items-center gap-3">
                 {location.pathname === '/' || location.pathname === '/contacts' ? (
                   <>
                     <ApperIcon name="Users" size={32} className="text-primary" />
@@ -354,6 +369,11 @@ return (
                   <>
                     <ApperIcon name="Building" size={32} className="text-primary" />
                     Companies
+                  </>
+                ) : location.pathname === '/leads' ? (
+                  <>
+                    <ApperIcon name="Target" size={32} className="text-primary" />
+                    Leads
                   </>
                 ) : location.pathname === '/pipeline' ? (
                   <>
@@ -450,10 +470,11 @@ return (
                           };
 
                           // Define all entity types with their display properties
-                          const entities = [
+const entities = [
                             { type: 'contacts', results: searchResults.contacts, title: 'Contacts', icon: 'User', iconColor: 'text-blue-600', bgColor: 'bg-blue-100' },
                             { type: 'companies', results: searchResults.companies, title: 'Companies', icon: 'Building2', iconColor: 'text-green-600', bgColor: 'bg-green-100' },
-                            { type: 'deals', results: searchResults.deals, title: 'Deals', icon: 'Target', iconColor: 'text-purple-600', bgColor: 'bg-purple-100' },
+                            { type: 'leads', results: searchResults.leads, title: 'Leads', icon: 'Target', iconColor: 'text-indigo-600', bgColor: 'bg-indigo-100' },
+                            { type: 'deals', results: searchResults.deals, title: 'Deals', icon: 'DollarSign', iconColor: 'text-purple-600', bgColor: 'bg-purple-100' },
                             { type: 'tasks', results: searchResults.tasks, title: 'Tasks', icon: 'CheckSquare', iconColor: 'text-orange-600', bgColor: 'bg-orange-100' }
                           ];
 
@@ -504,6 +525,21 @@ return (
                 >
                   <ApperIcon name="Plus" size={18} />
                   <span>Add Company</span>
+                </button>
+)}
+
+              {/* Show Add Lead button only on leads page */}
+              {location.pathname === '/leads' && (
+                <button
+                  onClick={() => {
+                    if (pageModalHandlers.handleCreateLead) {
+                      pageModalHandlers.handleCreateLead();
+                    }
+                  }}
+                  className="inline-flex items-center space-x-2 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors font-medium"
+                >
+                  <ApperIcon name="Plus" size={18} />
+                  <span>Add Lead</span>
                 </button>
               )}
 

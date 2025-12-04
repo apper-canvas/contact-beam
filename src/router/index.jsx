@@ -5,6 +5,7 @@ import React, { Suspense, lazy } from "react";
 const Layout = lazy(() => import('@/components/organisms/Layout'));
 const ContactManagement = lazy(() => import('@/components/pages/ContactManagement'));
 const CompanyDetails = lazy(() => import('@/components/pages/CompanyDetails'));
+const LeadManagement = lazy(() => import('@/components/pages/LeadManagement'));
 const Pipeline = lazy(() => import('@/components/pages/Pipeline'));
 const TaskManagement = lazy(() => import('@/components/pages/TaskManagement'));
 const NotFound = lazy(() => import('@/components/pages/NotFound'));
@@ -39,6 +40,10 @@ const mainRoutes = [
     path: "companies",
     element: <SuspenseWrapper><CompanyDetails /></SuspenseWrapper>
 },
+{
+    path: "leads", 
+    element: <SuspenseWrapper><LeadManagement /></SuspenseWrapper>
+  },
   {
     path: "pipeline",
     element: <SuspenseWrapper><Pipeline /></SuspenseWrapper>
