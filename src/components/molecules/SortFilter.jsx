@@ -3,10 +3,10 @@ import ApperIcon from "@/components/ApperIcon";
 
 const SortFilter = ({ sortBy, onSortChange, className }) => {
   const sortOptions = [
-    { value: "name", label: "Name (A-Z)" },
+    { value: "leadName", label: "Lead Name (A-Z)" },
     { value: "company", label: "Company (A-Z)" },
-    { value: "updated", label: "Recently Updated" },
-    { value: "created", label: "Recently Added" }
+    { value: "leadStatus", label: "Status" },
+    { value: "createdAt", label: "Recently Added" }
   ];
 
   return (

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useOutletContext } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { getAllLeads, createLead, updateLead, deleteLead, searchLeads } from '@/services/api/leadService';
+import { getAllLeads, createLead, updateLead, deleteLead } from '@/services/api/leadService';
 import { companyService } from '@/services/api/companyService';
 import ApperIcon from '@/components/ApperIcon';
 import Loading from '@/components/ui/Loading';
@@ -11,7 +11,6 @@ import Modal from '@/components/atoms/Modal';
 import Button from '@/components/atoms/Button';
 import Input from '@/components/atoms/Input';
 import Textarea from '@/components/atoms/Textarea';
-import SearchBar from '@/components/molecules/SearchBar';
 import SortFilter from '@/components/molecules/SortFilter';
 import ConfirmDialog from '@/components/molecules/ConfirmDialog';
 
@@ -19,8 +18,7 @@ const LeadManagement = () => {
   const [leads, setLeads] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [sortBy, setSortBy] = useState('createdAt');
+const [sortBy, setSortBy] = useState('createdAt');
   const [sortOrder, setSortOrder] = useState('desc');
   const [currentPage, setCurrentPage] = useState(1);
   const [leadsPerPage] = useState(10);
@@ -53,9 +51,9 @@ const LeadManagement = () => {
   }, []);
 
   // Search functionality
-  useEffect(() => {
-    handleSearch();
-  }, [searchQuery]);
+useEffect(() => {
+    loadLeads();
+  }, [sortBy, sortOrder]);
 
   const loadLeads = async () => {
     try {
@@ -71,23 +69,47 @@ const LeadManagement = () => {
     }
   };
 
-  const handleSearch = async () => {
-    if (!searchQuery.trim()) {
-      loadLeads();
-      return;
+const handleSort = (newSortBy) => {
+    if (sortBy === newSortBy) {
+      setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
+    } else {
+      setSortBy(newSortBy);
+      setSortOrder('asc');
     }
+  };
 
-    try {
-      setLoading(true);
-      const results = await searchLeads(searchQuery);
-      setLeads(results);
-      setCurrentPage(1);
-    } catch (err) {
-      console.error('Search error:', err);
-      toast.error('Search failed');
-    } finally {
-      setLoading(false);
-    }
+  const sortLeads = (leadsToSort) => {
+    return [...leadsToSort].sort((a, b) => {
+      let aValue, bValue;
+      
+      switch (sortBy) {
+        case 'leadName':
+          aValue = a.leadName.toLowerCase();
+          bValue = b.leadName.toLowerCase();
+          break;
+        case 'company':
+          aValue = (typeof a.company === 'string' ? a.company : a.company?.name || '').toLowerCase();
+          bValue = (typeof b.company === 'string' ? b.company : b.company?.name || '').toLowerCase();
+          break;
+        case 'leadStatus':
+          aValue = a.leadStatus.toLowerCase();
+          bValue = b.leadStatus.toLowerCase();
+          break;
+        case 'createdAt':
+        default:
+          aValue = new Date(a.createdAt);
+          bValue = new Date(b.createdAt);
+          break;
+      }
+      
+      if (sortBy === 'createdAt') {
+        return sortOrder === 'desc' ? bValue - aValue : aValue - bValue;
+      }
+      
+      if (aValue < bValue) return sortOrder === 'asc' ? -1 : 1;
+      if (aValue > bValue) return sortOrder === 'asc' ? 1 : -1;
+      return 0;
+    });
   };
 
   const handleAddLead = () => {
@@ -213,12 +235,12 @@ const LeadManagement = () => {
     <div className="h-full flex flex-col bg-gray-50">
       {/* Header */}
       <div className="bg-white border-b border-gray-200 px-6 py-4">
-        <div className="flex flex-col sm:flex-row gap-4">
+<div className="flex flex-col sm:flex-row gap-4">
           <div className="flex-1">
-            <SearchBar
-              value={searchQuery}
-              onChange={setSearchQuery}
-              placeholder="Search leads..."
+            <SortFilter
+              sortBy={sortBy}
+              onSortChange={handleSort}
+              className="w-full sm:w-64"
             />
           </div>
           
