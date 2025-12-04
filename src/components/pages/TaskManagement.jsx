@@ -17,7 +17,7 @@ const TaskManagement = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('All');
   const [sortBy, setSortBy] = useState('dueDate');
-  
+const [viewMode, setViewMode] = useState('grid'); // 'grid' or 'list'
   // Modal states
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [isFormLoading, setIsFormLoading] = useState(false);
@@ -161,11 +161,37 @@ const TaskManagement = () => {
               Task Management
             </h1>
             <p className="text-gray-600 mt-1">Organize and track your tasks efficiently</p>
+</div>
+          <div className="flex items-center space-x-3">
+            <div className="flex items-center bg-gray-100 rounded-lg p-1">
+              <button
+                onClick={() => setViewMode('grid')}
+                className={`p-2 rounded transition-colors ${
+                  viewMode === 'grid' 
+                    ? 'bg-white text-blue-600 shadow-sm' 
+                    : 'text-gray-500 hover:text-gray-700'
+                }`}
+                title="Grid view"
+              >
+                <ApperIcon name="Grid3X3" size={16} />
+              </button>
+              <button
+                onClick={() => setViewMode('list')}
+                className={`p-2 rounded transition-colors ${
+                  viewMode === 'list' 
+                    ? 'bg-white text-blue-600 shadow-sm' 
+                    : 'text-gray-500 hover:text-gray-700'
+                }`}
+                title="List view"
+              >
+                <ApperIcon name="List" size={16} />
+              </button>
+            </div>
+            <Button onClick={handleCreateTask} className="bg-blue-600 hover:bg-blue-700">
+              <ApperIcon name="Plus" size={16} className="mr-2" />
+              Create Task
+            </Button>
           </div>
-          <Button onClick={handleCreateTask} className="bg-blue-600 hover:bg-blue-700">
-            <ApperIcon name="Plus" size={16} className="mr-2" />
-            Create Task
-          </Button>
         </div>
 
         {/* Search and Filters */}
@@ -208,7 +234,7 @@ const TaskManagement = () => {
       </div>
 
       {/* Content */}
-      <div className="flex-1 overflow-y-auto p-6">
+<div className="flex-1 overflow-y-auto p-6">
         <TaskList
           tasks={tasks}
           loading={loading}
@@ -218,6 +244,7 @@ const TaskManagement = () => {
           searchTerm={searchTerm}
           statusFilter={statusFilter}
           sortBy={sortBy}
+          viewMode={viewMode}
         />
       </div>
 
