@@ -131,8 +131,8 @@ const Pipeline = () => {
     );
   }
 
-  return (
-<div className="h-full flex flex-col bg-gradient-to-br from-slate-50 to-blue-50 pipeline-scroll-container">
+return (
+    <div className="h-full flex flex-col bg-gradient-to-br from-slate-50 to-blue-50 pipeline-scroll-container overflow-y-auto">
       {/* Header */}
       <div className="flex-shrink-0 p-6 border-b border-gray-200 bg-white/80 backdrop-blur-sm">
         <div className="flex items-center justify-between">
@@ -177,8 +177,8 @@ const Pipeline = () => {
       </div>
 
       {/* Pipeline Board */}
-<div className="flex-1 overflow-hidden">
-        {deals.length === 0 ? (
+<div className="flex-1 overflow-y-auto">
+          {deals.length === 0 ? (
           <div className="h-full flex items-center justify-center">
             <Empty 
               title="No Deals Found"
@@ -209,7 +209,7 @@ const Pipeline = () => {
                             ref={provided.innerRef}
                             {...provided.droppableProps}
                             className={`
-                              flex-1 p-5 rounded-lg min-h-[200px] transition-all duration-200 pipeline-stage-scroll space-y-4
+                              flex-1 p-5 rounded-lg min-h-[200px] transition-all duration-200 pipeline-stage-scroll overflow-y-auto space-y-4
                               ${snapshot.isDraggingOver 
                                 ? 'bg-blue-50 border-2 border-blue-300 border-dashed' 
                                 : 'bg-gray-50 border-2 border-gray-200 border-dashed'

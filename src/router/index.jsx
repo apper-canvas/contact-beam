@@ -1,5 +1,5 @@
-import { createBrowserRouter } from 'react-router-dom';
-import { lazy, Suspense } from 'react';
+import { createBrowserRouter } from "react-router-dom";
+import React, { Suspense, lazy } from "react";
 
 // Lazy load components
 const Layout = lazy(() => import('@/components/organisms/Layout'));
@@ -29,63 +29,34 @@ const mainRoutes = [
   {
     path: "",
     index: true,
-    element: (
-      <SuspenseWrapper>
-        <ContactManagement />
-      </SuspenseWrapper>
-    )
+    element: <SuspenseWrapper><ContactManagement /></SuspenseWrapper>
   },
   {
     path: "contacts",
-    element: (
-      <SuspenseWrapper>
-        <ContactManagement />
-      </SuspenseWrapper>
-    )
+    element: <SuspenseWrapper><ContactManagement /></SuspenseWrapper>
   },
   {
     path: "companies",
-    element: (
-      <SuspenseWrapper>
-        <CompanyDetails />
-      </SuspenseWrapper>
-    )
-  },
+    element: <SuspenseWrapper><CompanyDetails /></SuspenseWrapper>
+},
   {
     path: "pipeline",
-    element: (
-      <SuspenseWrapper>
-        <Pipeline />
-      </SuspenseWrapper>
-)
+    element: <SuspenseWrapper><Pipeline /></SuspenseWrapper>
   },
   {
     path: "tasks",
-    element: (
-      <SuspenseWrapper>
-        <TaskManagement />
-      </SuspenseWrapper>
-    )
+    element: <SuspenseWrapper><TaskManagement /></SuspenseWrapper>
   },
   {
     path: "*",
-    element: (
-      <SuspenseWrapper>
-        <NotFound />
-      </SuspenseWrapper>
-    )
+    element: <SuspenseWrapper><NotFound /></SuspenseWrapper>
   }
 ];
-
 // Router configuration
 const routes = [
   {
     path: "/",
-    element: (
-      <SuspenseWrapper>
-        <Layout />
-      </SuspenseWrapper>
-    ),
+    element: <SuspenseWrapper><Layout /></SuspenseWrapper>,
     children: [...mainRoutes]
   }
 ];
