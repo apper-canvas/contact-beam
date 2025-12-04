@@ -129,7 +129,6 @@ const handleCompanySelect = (company) => {
     );
   }
 
-  return (
 return (
     <div className="h-full flex flex-col">
       {/* Header */}
@@ -402,44 +401,61 @@ const handleCompanyClick = (company) => {
   }
 return (
     <div className="h-full flex flex-col bg-background">
-    {/* Header */}
-    <div className="p-4 lg:p-6 border-b border-gray-200 bg-surface">
+      {/* Header */}
+      <div className="p-4 lg:p-6 border-b border-gray-200 bg-surface">
+        <div className="flex flex-col space-y-4 mb-6">
+          <div className="flex justify-between items-start">
+            <div>
+              <h1 className="text-2xl font-bold text-gray-900">Companies</h1>
+              <p className="text-gray-600 mt-1">
+                {filteredCompanies.length} of {companies.length} companies
+              </p>
+            </div>
+            <Button onClick={handleAddCompany} className="bg-primary hover:bg-primary/90 min-h-[44px]">
+              <ApperIcon name="Plus" size={16} className="mr-2" />
+              Add Company
+            </Button>
+          </div>
         </div>
+
         {/* Search and Sort Controls */}
         <div className="flex flex-col lg:flex-row gap-4">
-            {/* Search */}
-            <div className="relative flex-1">
-                <ApperIcon
-                    name="Search"
-                    size={16}
-                    className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-                <Input
-                    type="text"
-                    placeholder="Search companies..."
-                    value={searchTerm}
-                    onChange={e => setSearchTerm(e.target.value)}
-                    className="pl-10 min-h-[44px]" />
-            </div>
-            {/* Sort Controls */}
-            <div className="flex space-x-2">
-                <select
-                    value={sortBy}
-                    onChange={e => setSortBy(e.target.value)}
-                    className="px-3 py-2 border border-gray-300 rounded-lg text-sm min-h-[44px] focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
-                    <option value="name">Sort by Name</option>
-                    <option value="industry">Sort by Industry</option>
-                    <option value="employeeCount">Sort by Size</option>
-                    <option value="createdAt">Sort by Date</option>
-                </select>
-                <Button
-                    variant="secondary"
-                    size="sm"
-                    onClick={() => setSortOrder(prev => prev === "asc" ? "desc" : "asc")}
-                    icon={sortOrder === "asc" ? "ArrowUp" : "ArrowDown"}
-                    className="min-h-[44px] px-3" />
-            </div>
+          {/* Search */}
+          <div className="relative flex-1">
+            <ApperIcon
+              name="Search"
+              size={16}
+              className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" 
+            />
+            <Input
+              type="text"
+              placeholder="Search companies..."
+              value={searchTerm}
+              onChange={e => setSearchTerm(e.target.value)}
+              className="pl-10 min-h-[44px]" 
+            />
+          </div>
+          {/* Sort Controls */}
+          <div className="flex space-x-2">
+            <select
+              value={sortBy}
+              onChange={e => setSortBy(e.target.value)}
+              className="px-3 py-2 border border-gray-300 rounded-lg text-sm min-h-[44px] focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+              <option value="name">Sort by Name</option>
+              <option value="industry">Sort by Industry</option>
+              <option value="employeeCount">Sort by Size</option>
+              <option value="createdAt">Sort by Date</option>
+            </select>
+            <Button
+              variant="secondary"
+              size="sm"
+              onClick={() => setSortOrder(prev => prev === "asc" ? "desc" : "asc")}
+              icon={sortOrder === "asc" ? "ArrowUp" : "ArrowDown"}
+              className="min-h-[44px] px-3" 
+            />
+          </div>
         </div>
-    </div>
+      </div>
     {/* Companies Table */}
     <div className="flex-1 overflow-hidden bg-surface">
         {filteredCompanies.length === 0 ? <div className="h-full flex items-center justify-center">
