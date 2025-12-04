@@ -87,10 +87,12 @@ const [refreshTrigger, setRefreshTrigger] = useState(0);
     }
   };
 
-  const handleSearchBlur = (e) => {
+const handleSearchBlur = (e) => {
     // Delay hiding results to allow clicking on them
     setTimeout(() => {
-      if (!e.currentTarget.contains(document.activeElement)) {
+      // Check if activeElement exists and currentTarget contains it
+      const activeElement = document.activeElement;
+      if (!activeElement || !e.currentTarget.contains(activeElement)) {
         setShowResults(false);
       }
     }, 200);
