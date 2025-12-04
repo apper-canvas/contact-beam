@@ -109,11 +109,6 @@ try {
       console.log('Delete deal:', deal.Id);
       toast.info('Delete functionality will be implemented soon');
       return;
-      setDeals(prev => prev.filter(d => d.Id !== deal.Id));
-      
-// Update analytics
-      const newAnalytics = await getPipelineAnalytics();
-      setAnalytics(newAnalytics);
     } catch (err) {
       console.error('Error deleting deal:', err);
       toast.error('Failed to delete deal. Please try again.');
