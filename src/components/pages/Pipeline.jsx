@@ -216,7 +216,7 @@ const Pipeline = () => {
                               }
                             `}
                           >
-                            <div className="space-y-3">
+<div className="space-y-4">
                               {stageDeals.map((deal, index) => (
                                 <Draggable
                                   key={deal.Id}
