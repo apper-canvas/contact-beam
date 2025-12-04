@@ -411,14 +411,11 @@ case 'employeeCount':
   return (
     <div className="h-full flex flex-col bg-background">
 {/* Header */}
-      <div className="p-4 lg:p-6 border-b border-gray-200 bg-surface">
+<div className="p-4 lg:p-6 border-b border-gray-200 bg-surface">
         <div className="flex flex-col space-y-4 mb-6">
           <div className="flex justify-between items-start">
-            <div>
-              <h1 className="text-2xl font-bold text-gray-900">Companies</h1>
-              <p className="text-gray-600 mt-1">
-                {filteredCompanies.length} of {companies.length} companies
-              </p>
+            <div className="text-gray-600">
+              {filteredCompanies.length} of {companies.length} companies
             </div>
           </div>
         </div>

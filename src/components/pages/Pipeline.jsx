@@ -134,16 +134,9 @@ const Pipeline = () => {
 return (
     <div className="h-full flex flex-col bg-gradient-to-br from-slate-50 to-blue-50 pipeline-scroll-container overflow-y-auto">
       {/* Header */}
-      <div className="flex-shrink-0 p-6 border-b border-gray-200 bg-white/80 backdrop-blur-sm">
+<div className="flex-shrink-0 p-6 border-b border-gray-200 bg-white/80 backdrop-blur-sm">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-3">
-              <ApperIcon name="Workflow" size={32} className="text-primary" />
-              Sales Pipeline
-            </h1>
-            <p className="text-gray-600 mt-1">
-              Manage deals across pipeline stages with drag & drop
-            </p>
           </div>
           
           <div className="flex items-center gap-4">

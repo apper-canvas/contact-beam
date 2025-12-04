@@ -29,10 +29,7 @@ return (
       {/* Header */}
 <div className="p-4 lg:p-6 border-b border-gray-200">
         <div className="flex flex-col lg:flex-row justify-between items-start gap-4">
-          <div>
-<h2 className="text-xl lg:text-2xl font-bold text-gray-900 mb-1">
-              {contact.name}
-            </h2>
+<div>
             <p className="text-base lg:text-lg text-secondary">
               {contact.position} at {contact.company}
             </p>

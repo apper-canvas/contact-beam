@@ -125,8 +125,19 @@ const Layout = () => {
 return (
     <div className="min-h-screen bg-background flex flex-col lg:flex-row">
       {/* Mobile Menu Button */}
-      <div className="lg:hidden bg-white border-b border-gray-200 px-4 py-3 flex items-center justify-between">
-        <h1 className="text-xl font-semibold text-gray-900">Contact Hub</h1>
+<div className="lg:hidden bg-white border-b border-gray-200 px-4 py-3 flex items-center justify-between">
+        <h1 className="text-xl font-semibold text-gray-900">
+          {window.location.pathname === '/' || window.location.pathname === '/contacts' 
+            ? 'Contacts'
+            : window.location.pathname === '/companies'
+            ? 'Companies'
+            : window.location.pathname === '/pipeline'
+            ? 'Sales Pipeline'
+            : window.location.pathname === '/tasks'
+            ? 'Tasks'
+            : 'Contact Hub'
+          }
+        </h1>
         <button
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           className="p-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 min-h-[44px] min-w-[44px] flex items-center justify-center"
@@ -154,8 +165,7 @@ return (
                 <ApperIcon name="Users" size={24} className="text-white" />
               </div>
               <div>
-                <h1 className="text-xl font-bold text-gray-900">Contact Hub</h1>
-                <p className="text-xs text-gray-600">Manage efficiently</p>
+<h1 className="text-xl font-bold text-gray-900">Contact Hub</h1>
               </div>
             </div>
           </div>
@@ -200,7 +210,39 @@ return (
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col min-w-0">
 {/* Top Header with Search, Add Contact, and Profile */}
-        <header className="sticky top-0 z-10 bg-white shadow-sm border-b border-gray-200 px-4 lg:px-6 py-3 lg:py-4">
+<header className="sticky top-0 z-10 bg-white shadow-sm border-b border-gray-200 px-4 lg:px-6 py-3 lg:py-4">
+          <div className="flex items-center justify-between mb-4">
+            <div>
+              <h1 className="text-2xl lg:text-3xl font-bold text-gray-900 flex items-center gap-3">
+                {window.location.pathname === '/' || window.location.pathname === '/contacts' ? (
+                  <>
+                    <ApperIcon name="Users" size={32} className="text-primary" />
+                    Contacts
+                  </>
+                ) : window.location.pathname === '/companies' ? (
+                  <>
+                    <ApperIcon name="Building" size={32} className="text-primary" />
+                    Companies
+                  </>
+                ) : window.location.pathname === '/pipeline' ? (
+                  <>
+                    <ApperIcon name="Workflow" size={32} className="text-primary" />
+                    Sales Pipeline
+                  </>
+                ) : window.location.pathname === '/tasks' ? (
+                  <>
+                    <ApperIcon name="CheckSquare" size={32} className="text-primary" />
+                    Tasks
+                  </>
+                ) : (
+                  <>
+                    <ApperIcon name="Users" size={32} className="text-primary" />
+                    Contact Hub
+                  </>
+                )}
+              </h1>
+            </div>
+          </div>
           <div className="flex items-center justify-between">
             {/* Search Bar - Hidden on mobile, shown on desktop */}
             <div className="hidden md:flex flex-1 max-w-2xl">
