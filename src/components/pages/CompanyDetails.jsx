@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { companyService } from "@/services/api/companyService";
 import { toast } from "react-toastify";
+import { create, getAll, update } from "@/services/api/dealService";
 import ApperIcon from "@/components/ApperIcon";
 import Loading from "@/components/ui/Loading";
 import ErrorView from "@/components/ui/ErrorView";
@@ -131,18 +132,13 @@ const handleCompanySelect = (company) => {
 return (
     <div className="h-full flex flex-col">
       {/* Header */}
-      <div className="flex flex-col space-y-4 mb-6">
-        <div className="flex justify-between items-start">
-          <div>
-            <h1 className="text-2xl font-bold text-gray-900">Companies</h1>
-            <p className="text-gray-600 mt-1">
-              {filteredAndSortedCompanies.length} of {companies.length} companies
-            </p>
-          </div>
-          <Button onClick={() => setShowModal(true)} className="bg-primary hover:bg-primary/90 min-h-[44px]">
-            <ApperIcon name="Plus" size={16} className="mr-2" />
-            Add Company
-          </Button>
+<div className="flex flex-col space-y-4 mb-6">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900">Companies</h1>
+          <p className="text-gray-600 mt-1">
+            {filteredAndSortedCompanies.length} of {companies.length} companies
+          </p>
+        </div>
         </div>
         <div className="flex flex-col md:flex-row gap-4">
           {/* Search */}
@@ -176,12 +172,12 @@ return (
             <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
               <ApperIcon name="ChevronDown" size={16} className="text-gray-400" />
             </div>
+</div>
           </div>
         </div>
       </div>
 
       {/* Companies Table */}
-      <div className="flex-1 bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
         <CompanyTable
           companies={filteredAndSortedCompanies}
           onSort={handleSort}
@@ -220,21 +216,22 @@ const CompanyDetails = () => {
   // Modal state for company details
   const [showCompanyModal, setShowCompanyModal] = useState(false);
 // Get the outlet context to register modal handlers
-  // const outletContext = useOutletContext(); // Commented out as useOutletContext is not imported
+  const outletContext = useOutletContext();
+  
   // Load companies on component mount
   useEffect(() => {
     loadCompanies();
   }, []);
 
 // Register modal handlers with Layout
-  // useEffect(() => {
-  //   if (outletContext?.setPageModalHandlers) {
-  //     outletContext.setPageModalHandlers(prev => ({
-  //       ...prev,
-  //       handleAddCompany: handleAddCompany
-  //     }));
-  //   }
-  // }, [outletContext]);
+  useEffect(() => {
+    if (outletContext?.setPageModalHandlers) {
+      outletContext.setPageModalHandlers(prev => ({
+        ...prev,
+        handleAddCompany: handleAddCompany
+      }));
+    }
+  }, [outletContext]);
   // Filter and sort companies when dependencies change
   useEffect(() => {
     let filtered = [...companies];
