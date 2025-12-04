@@ -133,14 +133,14 @@ const handleCompanySelect = (company) => {
 return (
     <div className="h-full flex flex-col">
       {/* Header */}
-<div className="flex flex-col space-y-4 mb-6">
+      <div className="flex flex-col space-y-4 mb-6">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">Companies</h1>
           <p className="text-gray-600 mt-1">
             {filteredAndSortedCompanies.length} of {companies.length} companies
           </p>
         </div>
-        </div>
+        
         <div className="flex flex-col md:flex-row gap-4">
           {/* Search */}
           <div className="flex-1 relative">
@@ -173,9 +173,8 @@ return (
             <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
               <ApperIcon name="ChevronDown" size={16} className="text-gray-400" />
             </div>
-</div>
+          </div>
         </div>
-</div>
       </div>
 
       {/* Companies Table */}
@@ -186,6 +185,7 @@ return (
           sortConfig={sortConfig}
           onCompanySelect={handleCompanySelect}
         />
+      </div>
 
       {/* Company Detail Modal */}
       <CompanyModal
