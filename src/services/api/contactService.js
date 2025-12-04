@@ -145,11 +145,9 @@ export const searchContacts = async (query) => {
     });
     
     // Return name matches first, then other matches
-    const filteredContacts = [...nameMatches, ...otherMatches];
+const filteredContacts = [...nameMatches, ...otherMatches];
     return filteredContacts.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
   } catch (error) {
-    throw new Error("Failed to search contacts");
-} catch (error) {
     throw new Error("Failed to search contacts");
   }
 };
