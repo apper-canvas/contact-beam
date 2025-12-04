@@ -410,7 +410,7 @@ case 'employeeCount':
 
   return (
     <div className="h-full flex flex-col bg-background">
-      {/* Header */}
+{/* Header */}
       <div className="p-4 lg:p-6 border-b border-gray-200 bg-surface">
         <div className="flex flex-col space-y-4 mb-6">
           <div className="flex justify-between items-start">
@@ -420,13 +420,8 @@ case 'employeeCount':
                 {filteredCompanies.length} of {companies.length} companies
               </p>
             </div>
-            <Button onClick={handleAddCompany} className="bg-primary hover:bg-primary/90 min-h-[44px]">
-              <ApperIcon name="Plus" size={16} className="mr-2" />
-              Add Company
-            </Button>
           </div>
         </div>
-
         {/* Search and Sort Controls */}
         <div className="flex flex-col lg:flex-row gap-4">
           {/* Search */}
