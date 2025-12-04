@@ -22,20 +22,48 @@ const [refreshTrigger, setRefreshTrigger] = useState(0);
   const [searchLoading, setSearchLoading] = useState(false);
   const [showResults, setShowResults] = useState(false);
   const navigate = useNavigate();
-  const location = useLocation();
+const location = useLocation();
+  
+  // Determine current context based on route
+  const getCurrentContext = () => {
+    const path = location.pathname;
+    if (path === '/' || path === '/contacts') return 'contacts';
+    if (path === '/companies') return 'companies';  
+    if (path === '/pipeline') return 'deals';
+    if (path === '/tasks') return 'tasks';
+    return 'all';
+  };
+
+  const getSearchPlaceholder = () => {
+    const context = getCurrentContext();
+    switch (context) {
+      case 'contacts':
+        return 'Search contacts, companies, deals, and tasks...';
+      case 'companies':
+        return 'Search companies, contacts, deals, and tasks...';
+      case 'deals':
+        return 'Search deals, contacts, companies, and tasks...';
+      case 'tasks':
+        return 'Search tasks, contacts, companies, and deals...';
+      default:
+        return 'Search across contacts, companies, deals, and tasks...';
+    }
+  };
   
   // Modal control functions from child pages
   const [pageModalHandlers, setPageModalHandlers] = useState({
     handleAddCompany: null,
     handleCreateTask: null
   });
-// App-level handlers
+// Import contextual search function
+  const { contextualGlobalSearch } = require('@/services/api/globalSearchService');
+
+  // App-level handlers
   const refreshContacts = () => {
     setRefreshTrigger(prev => prev + 1);
   };
-
   // Global search functionality
-  const handleSearch = async (query) => {
+const handleSearch = async (query) => {
     setSearchTerm(query);
     
     if (!query.trim()) {
@@ -47,8 +75,9 @@ const [refreshTrigger, setRefreshTrigger] = useState(0);
     setSearchLoading(true);
     setShowResults(true);
 
-    try {
-      const results = await globalSearch(query);
+try {
+      const context = getCurrentContext();
+      const results = await contextualGlobalSearch(query, context);
       setSearchResults(results);
     } catch (error) {
       console.error('Search failed:', error);
@@ -63,22 +92,38 @@ const [refreshTrigger, setRefreshTrigger] = useState(0);
     setSearchTerm('');
     setSearchResults(null);
 
+const currentContext = getCurrentContext();
+    
+    // If clicking on result that matches current context, stay on page
+    // Otherwise navigate to appropriate page
     switch (type) {
       case 'contacts':
-        navigate('/contacts');
+        if (currentContext !== 'contacts') {
+          navigate('/contacts');
+        }
         break;
       case 'companies':
-        navigate('/companies');
+        if (currentContext !== 'companies') {
+          navigate('/companies');
+        }
         break;
       case 'deals':
-        navigate('/pipeline');
+        if (currentContext !== 'deals') {
+          navigate('/pipeline');
+        }
         break;
       case 'tasks':
-        navigate('/tasks');
+        if (currentContext !== 'tasks') {
+          navigate('/tasks');
+        }
         break;
       default:
         break;
     }
+    
+    // Close search results
+    setSearchTerm('');
+    setShowResults(false);
   };
 
   const handleSearchFocus = () => {
@@ -100,14 +145,14 @@ const handleSearchBlur = (e) => {
 
   // Debounced search effect
   React.useEffect(() => {
-    const timeoutId = setTimeout(() => {
+const timeoutId = setTimeout(() => {
       if (searchTerm.trim()) {
         handleSearch(searchTerm);
       }
     }, 300);
 
     return () => clearTimeout(timeoutId);
-  }, [searchTerm]);
+  }, [searchTerm, location.pathname]);
 
   const handleContactSelect = (contact) => {
     setSelectedContact(contact);
@@ -205,8 +250,9 @@ loading,
     // Modal handlers for pages to register their functions
     setPageModalHandlers,
     // Global search context
-    searchTerm,
-    handleSearch: setSearchTerm
+searchTerm,
+    handleSearch: setSearchTerm,
+    currentContext: getCurrentContext()
   };
 
 return (
@@ -295,28 +341,28 @@ return (
       </aside>
 
       {/* Main Content Area */}
-      <div className="flex-1 flex flex-col min-w-0">
-{/* Top Header with Search, Add Contact, and Profile */}
-<header className="sticky top-0 z-10 bg-white shadow-sm border-b border-gray-200 px-4 lg:px-6 py-3 lg:py-4">
+<div className="flex-1 flex flex-col min-w-0">
+        {/* Top Header with Search, Add Contact, and Profile */}
+        <header className="sticky top-0 z-10 bg-white shadow-sm border-b border-gray-200 px-4 lg:px-6 py-3 lg:py-4">
           <div className="flex items-center justify-between mb-4">
             <div>
-<h1 className="text-base font-bold text-gray-900 flex items-center gap-3">
-                {window.location.pathname === '/' || window.location.pathname === '/contacts' ? (
+              <h1 className="text-base font-bold text-gray-900 flex items-center gap-3">
+                {location.pathname === '/' || location.pathname === '/contacts' ? (
                   <>
                     <ApperIcon name="Users" size={32} className="text-primary" />
                     Contacts
                   </>
-                ) : window.location.pathname === '/companies' ? (
+                ) : location.pathname === '/companies' ? (
                   <>
                     <ApperIcon name="Building" size={32} className="text-primary" />
                     Companies
                   </>
-                ) : window.location.pathname === '/pipeline' ? (
+                ) : location.pathname === '/pipeline' ? (
                   <>
                     <ApperIcon name="Workflow" size={32} className="text-primary" />
                     Sales Pipeline
                   </>
-                ) : window.location.pathname === '/tasks' ? (
+                ) : location.pathname === '/tasks' ? (
                   <>
                     <ApperIcon name="CheckSquare" size={32} className="text-primary" />
                     Tasks
@@ -341,12 +387,12 @@ return (
                   type="text"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  placeholder="Search across contacts, companies, deals, and tasks..."
+                  placeholder={getSearchPlaceholder()}
                   className="block w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-colors bg-gray-50 hover:bg-white"
                 />
                 
                 {/* Search Results Dropdown */}
-                {showResults && (
+{showResults && (
                   <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-50 max-h-96 overflow-y-auto">
                     {searchLoading ? (
                       <div className="p-4 text-center">
@@ -361,113 +407,69 @@ return (
                       </div>
                     ) : searchResults && Object.keys(searchResults).some(key => searchResults[key]?.length > 0) ? (
                       <div className="py-2">
-                        {searchResults.contacts?.length > 0 && (
-                          <div className="px-4 py-2">
-                            <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Contacts</h3>
-                            {searchResults.contacts.map((contact) => (
-                              <button
-                                key={`contact-${contact.Id}`}
-                                onClick={() => handleResultClick('contacts', contact)}
-                                className="w-full text-left px-3 py-2 hover:bg-gray-50 rounded-md transition-colors"
-                              >
-                                <div className="flex items-center space-x-3">
-                                  <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-                                    <ApperIcon name="User" size={14} className="text-blue-600" />
-                                  </div>
-                                  <div className="flex-1 min-w-0">
-                                    <div className="text-sm font-medium text-gray-900 truncate">
-                                      {contact.firstName} {contact.lastName}
+                        {/* Render results in context-aware order */}
+                        {(() => {
+                          const context = getCurrentContext();
+                          const renderEntityResults = (entityType, results, title, iconName, iconColor, bgColor) => {
+                            if (!results?.length) return null;
+                            
+                            const isCurrentContext = context === entityType;
+                            
+                            return (
+                              <div className={`px-4 py-2 ${isCurrentContext ? 'order-first' : ''} ${Object.keys(searchResults).filter(key => searchResults[key]?.length > 0).indexOf(entityType) > 0 ? 'border-t border-gray-100' : ''}`}>
+                                <h3 className={`text-xs font-semibold uppercase tracking-wider mb-2 ${isCurrentContext ? 'text-primary' : 'text-gray-500'}`}>
+                                  {title} {isCurrentContext && '(Current Page)'}
+                                </h3>
+                                {results.map((item) => (
+                                  <button
+                                    key={`${entityType}-${item.Id}`}
+                                    onClick={() => handleResultClick(entityType, item)}
+                                    className={`w-full text-left px-3 py-2 hover:bg-gray-50 rounded-md transition-colors ${isCurrentContext ? 'border-l-2 border-primary' : ''}`}
+                                  >
+                                    <div className="flex items-center space-x-3">
+                                      <div className={`w-8 h-8 ${bgColor} rounded-full flex items-center justify-center`}>
+                                        <ApperIcon name={iconName} size={14} className={iconColor} />
+                                      </div>
+                                      <div className="flex-1 min-w-0">
+                                        <div className="text-sm font-medium text-gray-900 truncate">
+                                          {entityType === 'contacts' ? `${item.firstName} ${item.lastName}` :
+                                           entityType === 'companies' ? item.name :
+                                           entityType === 'deals' ? item.title :
+                                           entityType === 'tasks' ? item.title : ''}
+                                        </div>
+                                        <div className="text-xs text-gray-500 truncate">
+                                          {entityType === 'contacts' ? `${item.email} • ${item.company}` :
+                                           entityType === 'companies' ? `${item.industry} • ${item.location}` :
+                                           entityType === 'deals' ? `${item.company} • $${item.value?.toLocaleString()}` :
+                                           entityType === 'tasks' ? `Due: ${new Date(item.dueDate).toLocaleDateString()} • ${item.status}` : ''}
+                                        </div>
+                                      </div>
                                     </div>
-                                    <div className="text-xs text-gray-500 truncate">
-                                      {contact.email} • {contact.company}
-                                    </div>
-                                  </div>
-                                </div>
-                              </button>
-                            ))}
-                          </div>
-                        )}
-                        
-                        {searchResults.companies?.length > 0 && (
-                          <div className="px-4 py-2 border-t border-gray-100">
-                            <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Companies</h3>
-                            {searchResults.companies.map((company) => (
-                              <button
-                                key={`company-${company.Id}`}
-                                onClick={() => handleResultClick('companies', company)}
-                                className="w-full text-left px-3 py-2 hover:bg-gray-50 rounded-md transition-colors"
-                              >
-                                <div className="flex items-center space-x-3">
-                                  <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
-                                    <ApperIcon name="Building2" size={14} className="text-green-600" />
-                                  </div>
-                                  <div className="flex-1 min-w-0">
-                                    <div className="text-sm font-medium text-gray-900 truncate">
-                                      {company.name}
-                                    </div>
-                                    <div className="text-xs text-gray-500 truncate">
-                                      {company.industry} • {company.location}
-                                    </div>
-                                  </div>
-                                </div>
-                              </button>
-                            ))}
-                          </div>
-                        )}
-                        
-                        {searchResults.deals?.length > 0 && (
-                          <div className="px-4 py-2 border-t border-gray-100">
-                            <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Deals</h3>
-                            {searchResults.deals.map((deal) => (
-                              <button
-                                key={`deal-${deal.Id}`}
-                                onClick={() => handleResultClick('deals', deal)}
-                                className="w-full text-left px-3 py-2 hover:bg-gray-50 rounded-md transition-colors"
-                              >
-                                <div className="flex items-center space-x-3">
-                                  <div className="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center">
-                                    <ApperIcon name="Target" size={14} className="text-purple-600" />
-                                  </div>
-                                  <div className="flex-1 min-w-0">
-                                    <div className="text-sm font-medium text-gray-900 truncate">
-                                      {deal.title}
-                                    </div>
-                                    <div className="text-xs text-gray-500 truncate">
-                                      {deal.company} • ${deal.value?.toLocaleString()}
-                                    </div>
-                                  </div>
-                                </div>
-                              </button>
-                            ))}
-                          </div>
-                        )}
-                        
-                        {searchResults.tasks?.length > 0 && (
-                          <div className="px-4 py-2 border-t border-gray-100">
-                            <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Tasks</h3>
-                            {searchResults.tasks.map((task) => (
-                              <button
-                                key={`task-${task.Id}`}
-                                onClick={() => handleResultClick('tasks', task)}
-                                className="w-full text-left px-3 py-2 hover:bg-gray-50 rounded-md transition-colors"
-                              >
-                                <div className="flex items-center space-x-3">
-                                  <div className="w-8 h-8 bg-orange-100 rounded-full flex items-center justify-center">
-                                    <ApperIcon name="CheckSquare" size={14} className="text-orange-600" />
-                                  </div>
-                                  <div className="flex-1 min-w-0">
-                                    <div className="text-sm font-medium text-gray-900 truncate">
-                                      {task.title}
-                                    </div>
-                                    <div className="text-xs text-gray-500 truncate">
-                                      Due: {new Date(task.dueDate).toLocaleDateString()} • {task.status}
-                                    </div>
-                                  </div>
-                                </div>
-                              </button>
-                            ))}
-                          </div>
-                        )}
+                                  </button>
+                                ))}
+                              </div>
+                            );
+                          };
+
+                          // Define all entity types with their display properties
+                          const entities = [
+                            { type: 'contacts', results: searchResults.contacts, title: 'Contacts', icon: 'User', iconColor: 'text-blue-600', bgColor: 'bg-blue-100' },
+                            { type: 'companies', results: searchResults.companies, title: 'Companies', icon: 'Building2', iconColor: 'text-green-600', bgColor: 'bg-green-100' },
+                            { type: 'deals', results: searchResults.deals, title: 'Deals', icon: 'Target', iconColor: 'text-purple-600', bgColor: 'bg-purple-100' },
+                            { type: 'tasks', results: searchResults.tasks, title: 'Tasks', icon: 'CheckSquare', iconColor: 'text-orange-600', bgColor: 'bg-orange-100' }
+                          ];
+
+                          // Sort entities to show current context first
+                          const sortedEntities = entities.sort((a, b) => {
+                            if (a.type === context) return -1;
+                            if (b.type === context) return 1;
+                            return 0;
+                          });
+
+                          return sortedEntities.map(entity => 
+                            renderEntityResults(entity.type, entity.results, entity.title, entity.icon, entity.iconColor, entity.bgColor)
+                          );
+                        })()}
                       </div>
                     ) : searchTerm.trim() ? (
                       <div className="p-4 text-center text-gray-500 text-sm">
